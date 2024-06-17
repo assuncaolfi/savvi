@@ -294,6 +294,7 @@ optional_stop
 
 ```{python}
 #| label: pois-plot
+#| code-fold: true
 parameter = ["$\\delta_1$ - $\\delta_0$"]
 contrasts = test.weights @ delta
 data = to_df(sequence, parameter, contrasts)

@@ -11,8 +11,16 @@
       Process](#inhomogeneous-poisson-counting-process)
 - [References](#references)
 
-savvi is a package for Safe Anytime Valid Inference ([Ramdas et al.
-2023](#ref-ramdas2023gametheoretic)). Also, it’s a savvy pun.
+savvi is a package for Safe Anytime Valid Inference. Also, it’s a savvy
+pun.
+
+From Ramdas et al. ([2023](#ref-ramdas2023gametheoretic)):
+
+> Safe anytime-valid inference (SAVI) provides measures of statistical
+> evidence and certainty – e-processes for testing and confidence
+> sequences for estimation – that remain valid at all stopping times,
+> accommodating continuous monitoring and analysis of accumulating data
+> and optional stopping or continuation for any reason.
 
 ## Install
 
@@ -356,12 +364,17 @@ optional_stop
      'p': 0.04675270375081281,
      'confidence_set': [[0.0036592933902448955, 0.9085292981365327]]}
 
+<details class="code-fold">
+<summary>Code</summary>
+
 ``` python
 parameter = ["$\\delta_1$ - $\\delta_0$"]
 contrasts = test.weights @ delta
 data = to_df(sequence, parameter, contrasts)
 plot(data)
 ```
+
+</details>
 
 <img src="README_files/figure-commonmark/pois-plot-output-1.png"
 id="pois-plot" />
