@@ -20,9 +20,10 @@ Implementation of tests from Anytime-Valid Inference for Multinomial Count Data 
 ```{python}
 #| label: black
 #| echo: false
+#| include: false
 import jupyter_black
 
-_ = jupyter_black.load(lab=False)
+jupyter_black.load(lab=False)
 ```
 
 #### Multinomial Test

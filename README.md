@@ -38,19 +38,6 @@ Implementation of tests from Anytime-Valid Inference for Multinomial
 Count Data ([Lindon and Malek 2022](#ref-lindon2022anytimevalid)).
 Application examples were also adapted from the same publication.
 
-                <script type="application/javascript" id="jupyter_black">
-                function jb_set_cell(
-                        jb_formatted_code
-                        ) {
-                    for (var cell of Jupyter.notebook.get_cells()) {
-                        if (cell.input_prompt_number == "*") {
-                            cell.set_text(jb_formatted_code)
-                            return
-                        }
-                    }
-                }
-                </script>
-                &#10;
 #### Multinomial Test
 
 *Application: sample ratio mismatch.*
