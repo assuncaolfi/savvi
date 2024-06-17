@@ -9,6 +9,7 @@
       Process](#inhomogeneous-bernoulli-process)
     - [Inhomogeneous Poisson Counting
       Process](#inhomogeneous-poisson-counting-process)
+- [References](#references)
 
 savvi is a package for Safe Anytime Valid Inference (Ramdas et al.
 2023). Also, it’s a savvy pun.
@@ -352,14 +353,7 @@ plot(data)
 <img src="README_files/figure-commonmark/pois-plot-output-1.png"
 id="pois-plot" />
 
-``` python
-optional_stop_test = {
-    "n": 168,
-    "p": 0.04675270375081281,
-    "confidence_set": [[0.0036592933902448955, 0.9085292981365327]],
-}
-doc_test(optional_stop, optional_stop_test)
-```
+# References
 
 <div id="refs" class="references csl-bib-body hanging-indent"
 entry-spacing="0">

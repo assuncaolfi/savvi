@@ -302,6 +302,7 @@ plot(data)
 
 ```{python}
 #| label: pois-test
+#| echo: false
 optional_stop_test = {
     "n": 168,
     "p": 0.04675270375081281,

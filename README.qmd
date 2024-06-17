@@ -21,3 +21,7 @@ For development, use [pdm](https://github.com/pdm-project/pdm).
 
 {{< include examples/Multinomial.qmd >}}
 
+# References
+
+::: {#refs}
+:::
