@@ -2,8 +2,9 @@
 title: savvi
 format: gfm
 bibliography: references.bib
-toc: true
+link-citations: true
 toc-depth: 4
+toc: true
 ---
 
 savvi is a package for Safe Anytime Valid Inference [@ramdas2023gametheoretic].
