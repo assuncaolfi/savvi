@@ -1,0 +1,23 @@
+---
+title: savvi
+format: gfm
+bibliography: references.bib
+toc: true
+toc-depth: 4
+---
+
+savvi is a package for Safe Anytime Valid Inference [@ramdas2023gametheoretic].
+Also, it's a savvy pun.
+
+## Install
+
+```shell
+pip install git+https://github.com/assuncaolfi/savvi
+```
+
+For development, use [pdm](https://github.com/pdm-project/pdm).
+
+## Examples
+
+{{< include examples/Multinomial.qmd >}}
+
