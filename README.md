@@ -43,9 +43,9 @@ Application examples were also adapted from the same publication.
 *Application: sample ratio mismatch.*
 
 Consider a new experimental unit $n$ is assigned to one of
-$i \in \{1, 2, 3\}$ groups. Therefore, groups are
-$\mathrm{Multinomial}(1, \mathbf{\theta})$ distributed, with
-$\mathbf{\theta} = [0.1, 0.3, 0.6]$.
+$i \in \{1, 2, 3\}$ groups with probabilities
+$\mathbf{\theta} = [0.1, 0.3, 0.6]$. Therefore, groups are
+$\mathrm{Multinomial}(1, \mathbf{\theta})$ distributed.
 
 ``` python
 import numpy as np
@@ -201,7 +201,7 @@ $\mathbf{\delta} = [\log 0.2, \log 0.3, \log 0.4]$. The conditional
 probability that the next Bernoulli success comes from group $i$ is
 
 $$
-\theta_i = \frac{\rho_i \exp(\theta_i)}{\sum_{j=1}^d \rho_j \exp(\theta_j)}.
+\theta_i = \frac{\rho_i \exp(\delta_i)}{\sum_{j=1}^d \rho_j \exp(\delta_j)}.
 $$
 
 Therefore, the next Bernoulli success comes from a random group,
@@ -293,7 +293,7 @@ $\rho = [0.8, 0.2]$ and $\delta = [1.5, 2]$. The probability that the
 next point comes from process $i$ is
 
 $$
-\theta_i = \frac{\rho_i \exp(\theta_i)}{\sum_{j=1}^d \rho_j \exp(\theta_j)}.
+\theta_i = \frac{\rho_i \exp(\delta_i)}{\sum_{j=1}^d \rho_j \exp(\delta_j)}.
 $$
 
 Therefore, the next point comes from a random process, distributed as
@@ -333,7 +333,7 @@ test = Multinomial(u, rho)
 ```
 
 We can also set contrast weights $[-1, 1]$ to estimate confidence
-sequences for $\theta_1 - \theta_0$ at a significance level $u$:
+sequences for $\delta_1 - \delta_0$ at a significance level $u$:
 
 ``` python
 test.weights = np.array([[-1, 1]])
