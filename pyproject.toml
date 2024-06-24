@@ -31,4 +31,5 @@ dev = [
     "jupytext>=1.16.2",
     "jupyter-black>=0.3.4",
     "polars>=0.20.31",
+    "matplotlib>=3.9.0",
 ]
