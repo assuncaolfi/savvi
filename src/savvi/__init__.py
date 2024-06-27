@@ -93,7 +93,7 @@ class SequentialTest:
 class Multinomial(SequentialTest):
     """
     Implementation of
-    [Anytime-Valid Inference for Multinomial Count Data](https://arxiv.org/pdf/2011.03567).
+    [Anytime-Valid Inference for Multinomial Count Data](https://openreview.net/forum?id=a4zg0jiuVi).
 
     Attributes
     ----------
