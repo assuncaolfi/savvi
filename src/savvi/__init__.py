@@ -155,7 +155,9 @@ class Multinomial(SequentialTest):
         k: float = 100,
     ) -> None:
         super().__init__(u)
-        _validate(len(theta_0.shape) == 1, "theta_0 must have a single dimension")
+        _validate(
+            len(theta_0.shape) == 1, "theta_0 must have a single dimension"
+        )
         _validate(theta_0.sum() == 1, "theta_0 must sum to 1")
         self.theta_0 = theta_0
         self.theta = cp.Variable(self.d, name="theta")
@@ -188,7 +190,7 @@ class Multinomial(SequentialTest):
     def update(self, x: NDArray[np.int64], **kwargs) -> None:
         shape = (self.d,)
         _validate(x.shape == shape, f"x must have shape {shape}")
-        self.n += 1
+        self.n += x.sum()
         self.counts += x
         self.odds = self.update_odds(x, **kwargs)
         self.p = min(self.p, 1 / self.odds)
@@ -264,8 +266,12 @@ class Multinomial(SequentialTest):
                 problem.solve(**kwargs)
                 value = variable[i].value
                 confidence_set[i, j] = value
-        confidence_set[:, 0] = np.fmax(self.confidence_set[:, 0], confidence_set[:, 0])
-        confidence_set[:, 1] = np.fmin(self.confidence_set[:, 1], confidence_set[:, 1])
+        confidence_set[:, 0] = np.fmax(
+            self.confidence_set[:, 0], confidence_set[:, 0]
+        )
+        confidence_set[:, 1] = np.fmin(
+            self.confidence_set[:, 1], confidence_set[:, 1]
+        )
 
         return confidence_set
 
