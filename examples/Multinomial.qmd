@@ -1,4 +1,5 @@
 ---
+title: Multinomial
 jupyter:
   jupytext:
     text_representation:
@@ -12,7 +13,6 @@ jupyter:
     name: python3
 ---
 
-### Multinomial
 
 Implementation of tests from Anytime-Valid Inference for Multinomial Count Data [@lindon2022anytimevalid]. Application examples were also adapted from the same publication.
 
@@ -61,7 +61,6 @@ from savvi import Multinomial
 u = 0.05
 theta_0 = np.array([0.1, 0.4, 0.5])
 test = Multinomial(0.05, theta_0)
-test.__dict__
 ```
 
 For each new unit sample $n$, we run the test. If $p_n < u$, we have the option to stop running:
@@ -81,6 +80,7 @@ def run_sequence(test, xs, **kwargs):
         sequence[n] = {
             "n": test.n,
             "p": test.p,
+            "mle": test.mle.tolist(),
             "confidence_set": test.confidence_set.tolist(),
         }
         if test.p <= u:
@@ -105,7 +105,7 @@ def to_df(sequence, parameter, value):
     size = len(sequence)
     data = (
         pl.from_dicts(sequence)
-        .explode("confidence_set")
+        .explode("confidence_set", "mle")
         .with_columns(
             confidence_set=pl.col("confidence_set").list.to_struct(
                 fields=["lower", "upper"]
@@ -121,10 +121,12 @@ def to_df(sequence, parameter, value):
 def plot(data):
     plot = (
         so.Plot(data.to_pandas(), x="n")
-        .add(so.Line(color="black"), y="p", label="Sequential p-value")
-        .add(so.Line(linestyle="dashed"), y="value", color="parameter")
+        .add(so.Line(color="black"), y="p", label="P-value")
+        .add(so.Line(linestyle="dashed"), y="value", color="parameter", label="True Parameter")
+        .add(so.Line(), y="mle", color="parameter", label="MLE")
         .add(
-            so.Band(alpha=1 / theta.size), ymin="lower", ymax="upper", color="parameter"
+            so.Band(alpha=1 / theta.size), 
+            ymin="lower", ymax="upper", color="parameter", label="Confidence Set"
         )
         .label(color="", y="")
         .limit(y=(-0.05, 1.05))

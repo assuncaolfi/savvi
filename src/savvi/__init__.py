@@ -22,6 +22,8 @@ class SequentialTest:
         Odds in favor of the null hypothesis.
     p : float
         P-value.
+    mle : NDArray[np.float64]
+        Maximum likelihood estimate.
     confidence_set : NDArray[np.float64]
         Confidence set for parameters.
     """
@@ -30,6 +32,7 @@ class SequentialTest:
     n: int
     odds: float
     p: float
+    mle: NDArray[np.float64]
     confidence_set: NDArray[np.float64]
 
     def __init__(self, u: float) -> None:
@@ -71,6 +74,17 @@ class SequentialTest:
             Posterior odds.
         """
         pass
+
+    @abstractmethod
+    def update_mle(self) -> NDArray[np.float64]:
+        """
+        Update maximum likelihood point estimates.
+
+        Returns
+        -------
+        NDArray[np.float64]
+            Point estimates.
+        """
 
     @abstractmethod
     def update_confidence_set(self, **kwargs) -> NDArray[np.float64]:
@@ -155,9 +169,7 @@ class Multinomial(SequentialTest):
         k: float = 100,
     ) -> None:
         super().__init__(u)
-        _validate(
-            len(theta_0.shape) == 1, "theta_0 must have a single dimension"
-        )
+        _validate(len(theta_0.shape) == 1, "theta_0 must have a single dimension")
         _validate(theta_0.sum() == 1, "theta_0 must sum to 1")
         self.theta_0 = theta_0
         self.theta = cp.Variable(self.d, name="theta")
@@ -194,6 +206,7 @@ class Multinomial(SequentialTest):
         self.counts += x
         self.odds = self.update_odds(x, **kwargs)
         self.p = min(self.p, 1 / self.odds)
+        self.mle = self.update_mle()
         self.confidence_set = self.update_confidence_set(**kwargs)
         self.alpha += x
 
@@ -227,6 +240,13 @@ class Multinomial(SequentialTest):
         problem = cp.Problem(objective, constraints + self.hypothesis)
         problem.solve(**kwargs)
         return q.value
+
+    def update_mle(self) -> NDArray[np.float64]:
+        theta = self.counts / self.counts.sum()
+        if self.weights.size == 0:
+            return theta
+        contrast = theta / self.theta_0
+        return self.weights @ np.log(contrast, where=contrast > 0)
 
     def update_confidence_set(self, **kwargs) -> NDArray[np.float64]:
         if self.weights.size == 0:
@@ -266,12 +286,8 @@ class Multinomial(SequentialTest):
                 problem.solve(**kwargs)
                 value = variable[i].value
                 confidence_set[i, j] = value
-        confidence_set[:, 0] = np.fmax(
-            self.confidence_set[:, 0], confidence_set[:, 0]
-        )
-        confidence_set[:, 1] = np.fmin(
-            self.confidence_set[:, 1], confidence_set[:, 1]
-        )
+        confidence_set[:, 0] = np.fmax(self.confidence_set[:, 0], confidence_set[:, 0])
+        confidence_set[:, 1] = np.fmin(self.confidence_set[:, 1], confidence_set[:, 1])
 
         return confidence_set
 
