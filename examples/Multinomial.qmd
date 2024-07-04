@@ -1,5 +1,4 @@
 ---
-title: Multinomial
 jupyter:
   jupytext:
     text_representation:

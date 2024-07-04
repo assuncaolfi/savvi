@@ -3,12 +3,10 @@
 
 - [Install](#install)
 - [Examples](#examples)
-  - [Multinomial](#multinomial)
-    - [Multinomial Test](#multinomial-test)
-    - [Inhomogeneous Bernoulli
-      Process](#inhomogeneous-bernoulli-process)
-    - [Inhomogeneous Poisson Counting
-      Process](#inhomogeneous-poisson-counting-process)
+  - [Multinomial Test](#multinomial-test)
+  - [Inhomogeneous Bernoulli Process](#inhomogeneous-bernoulli-process)
+  - [Inhomogeneous Poisson Counting
+    Process](#inhomogeneous-poisson-counting-process)
 - [References](#references)
 
 savvi is a package for Safe Anytime Valid Inference. Also, it’s a savvy
@@ -31,8 +29,6 @@ pip install git+https://github.com/assuncaolfi/savvi
 For development, use [pdm](https://github.com/pdm-project/pdm).
 
 ## Examples
-
-### Multinomial
 
 Implementation of tests from Anytime-Valid Inference for Multinomial
 Count Data ([Lindon and Malek 2022](#ref-lindon2022anytimevalid)).
@@ -84,24 +80,7 @@ from savvi import Multinomial
 u = 0.05
 theta_0 = np.array([0.1, 0.4, 0.5])
 test = Multinomial(0.05, theta_0)
-test.__dict__
 ```
-
-    {'u': 0.05,
-     'n': 0,
-     'odds': 1.0,
-     'p': 1.0,
-     'theta_0': array([0.1, 0.4, 0.5]),
-     'theta': Variable((3,), theta),
-     'delta': Variable((3,), delta),
-     'hypothesis': [],
-     'alpha_0': array([10., 40., 50.]),
-     'alpha': array([10., 40., 50.]),
-     'counts': array([0, 0, 0]),
-     'confidence_set': array([[-inf,  inf],
-            [-inf,  inf],
-            [-inf,  inf]]),
-     '_weights': array([], dtype=float64)}
 
 For each new unit sample $n$, we run the test. If $p_n < u$, we have the
 option to stop running:
@@ -119,6 +98,7 @@ def run_sequence(test, xs, **kwargs):
         sequence[n] = {
             "n": test.n,
             "p": test.p,
+            "mle": test.mle.tolist(),
             "confidence_set": test.confidence_set.tolist(),
         }
         if test.p <= u:
@@ -134,6 +114,7 @@ optional_stop
 
     {'n': 402,
      'p': 0.04845591105969517,
+     'mle': [0.09950248756218906, 0.3208955223880597, 0.5796019900497512],
      'confidence_set': [[0.056684768115202705, 0.1493967591525672],
       [0.2608987241982874, 0.4028302603098119],
       [0.4971209299792429, 0.6517617329309116]]}
@@ -150,7 +131,7 @@ def to_df(sequence, parameter, value):
     size = len(sequence)
     data = (
         pl.from_dicts(sequence)
-        .explode("confidence_set")
+        .explode("confidence_set", "mle")
         .with_columns(
             confidence_set=pl.col("confidence_set").list.to_struct(
                 fields=["lower", "upper"]
@@ -166,10 +147,12 @@ def to_df(sequence, parameter, value):
 def plot(data):
     plot = (
         so.Plot(data.to_pandas(), x="n")
-        .add(so.Line(color="black"), y="p", label="Sequential p-value")
-        .add(so.Line(linestyle="dashed"), y="value", color="parameter")
+        .add(so.Line(color="black"), y="p", label="P-value")
+        .add(so.Line(linestyle="dashed"), y="value", color="parameter", label="True Parameter")
+        .add(so.Line(), y="mle", color="parameter", label="MLE")
         .add(
-            so.Band(alpha=1 / theta.size), ymin="lower", ymax="upper", color="parameter"
+            so.Band(alpha=1 / theta.size), 
+            ymin="lower", ymax="upper", color="parameter", label="Confidence Set"
         )
         .label(color="", y="")
         .limit(y=(-0.05, 1.05))
@@ -263,6 +246,7 @@ optional_stop
 
     {'n': 210,
      'p': 0.04861129531258319,
+     'mle': [1.0986122886681098, 0.21622310846963605],
      'confidence_set': [[0.0020567122072947704, 1.4880052569753974],
       [-0.3216759113208812, 0.4627565948192972]]}
 
@@ -349,6 +333,7 @@ optional_stop
 
     {'n': 168,
      'p': 0.04675270375081281,
+     'mle': [0.5839478885949534],
      'confidence_set': [[0.0036592933902448955, 0.9085292981365327]]}
 
 <details class="code-fold">
