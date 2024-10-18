@@ -1,5 +1,0 @@
----
-format: gfm
----
-
-{{< include index.qmd >}}

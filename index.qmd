@@ -1,5 +1,9 @@
 ---
 title: savvi
+format:
+  gfm:
+    output-file: README.md
+  html: default
 ---
 
 <!-- badges: start -->
