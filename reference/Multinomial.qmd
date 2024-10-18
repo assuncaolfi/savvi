@@ -1,0 +1,19 @@
+# Multinomial { #savvi.multinomial.Multinomial }
+
+```python
+multinomial.Multinomial(self, alpha, theta_0, k=100)
+```
+
+Sample ratio mismatch test from @lindon2022anytimevalid.
+See [example](../examples/Multinomial.qmd).
+
+## Attributes {.doc-section .doc-section-attributes}
+
+| Name    | Type                  | Description                     |
+|---------|-----------------------|---------------------------------|
+| theta   | cp.Variable           | Multinomial parameter.          |
+| theta_0 | NDArray\[np.float64\] | Null Multinomial parameter.     |
+| alpha_0 | NDArray\[np.float64\] | Prior Dirichlet parameters.     |
+| alpha   | NDArray\[np.float64\] | Posterior Dirichlet parameters. |
+| counts  | NDArray\[np.int64\]   | Success counts.                 |
+| d       | float                 | Size of theta.                  |

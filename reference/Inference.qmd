@@ -1,0 +1,66 @@
+# Inference { #savvi.Inference }
+
+```python
+Inference(self, alpha, p, tests=1)
+```
+
+Base class for inference.
+
+## Attributes
+
+| Name | Description |
+| --- | --- |
+| [p](#savvi.Inference.p) | Number of parameters. |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [batch](#savvi.Inference.batch) | For each sample unit in the batch: update, infer and keep the inference object. |
+| [calculate_conf_int](#savvi.Inference.calculate_conf_int) | Calculate confidence interval. |
+| [calculate_p_value](#savvi.Inference.calculate_p_value) | Calculate p-value. |
+| [infer](#savvi.Inference.infer) | Calculate confidence interval and p-value, then: |
+| [update](#savvi.Inference.update) | Update statistics. |
+
+### batch { #savvi.Inference.batch }
+
+```python
+Inference.batch(xs, **kwargs)
+```
+
+For each sample unit in the batch: update, infer and keep the inference object.
+
+### calculate_conf_int { #savvi.Inference.calculate_conf_int }
+
+```python
+Inference.calculate_conf_int(**kwargs)
+```
+
+Calculate confidence interval.
+
+### calculate_p_value { #savvi.Inference.calculate_p_value }
+
+```python
+Inference.calculate_p_value(**kwargs)
+```
+
+Calculate p-value.
+
+### infer { #savvi.Inference.infer }
+
+```python
+Inference.infer(**kwargs)
+```
+
+Calculate confidence interval and p-value, then:
+
+* Keep the maximum lower bound and minimum upper bound for the confidence interval;
+* Keep the minimum p-value.
+
+### update { #savvi.Inference.update }
+
+```python
+Inference.update(x, **kwargs)
+```
+
+Update statistics.

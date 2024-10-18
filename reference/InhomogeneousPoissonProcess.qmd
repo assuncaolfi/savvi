@@ -1,0 +1,8 @@
+# InhomogeneousPoissonProcess { #savvi.multinomial.InhomogeneousPoissonProcess }
+
+```python
+multinomial.InhomogeneousPoissonProcess(self, alpha, rho, weights, k=100)
+```
+
+Canary software release test from @lindon2022anytimevalid.
+See [example](../examples/InhomogeneousPoissonProcess.qmd).

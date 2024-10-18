@@ -1,0 +1,53 @@
+project:
+  type: website
+
+execute:
+  cache: true
+
+bibliography: references.bib
+css: styles.css
+link-citations: true
+# toc: true
+
+website:
+  navbar:
+    title: savvi
+    # logo: "assets/logo.png"
+    search: true
+    left:
+      - text: "Examples"
+        href: examples/index.qmd
+      - text: "Reference"
+        href: reference/index.qmd
+      - text: "Changelog"
+        href: CHANGELOG.md
+    tools:
+      - icon: github
+        menu:
+          - text: Source Code
+            href: https://github.com/assuncaolfi/savvi
+          - text: Report a Bug
+            href: https://github.com/assuncaolfi/savvi/issues
+
+metadata-files:
+  - _sidebar.yml
+
+quartodoc:
+  package: savvi
+  title: Reference
+  sidebar: _sidebar.yml
+
+  sections:
+    - title: "SAVI"
+      contents:
+        - Inference
+    - subtitle: Linear Regression
+      package: savvi.linear_regression
+      contents:
+        - LinearRegression
+    - subtitle: Multinomial
+      package: savvi.multinomial
+      contents:
+        - Multinomial
+        - InhomogeneousBernoulliProcess
+        - InhomogeneousPoissonProcess

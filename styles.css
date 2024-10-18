@@ -1,0 +1,3 @@
+.quarto-grid-item p.card-img-top > img {
+  object-fit: contain;
+}

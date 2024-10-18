@@ -1,0 +1,7 @@
+
+---
+title: Examples
+listing:
+    contents: .
+    type: grid
+---

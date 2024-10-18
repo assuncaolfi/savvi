@@ -1,0 +1,15 @@
+# InhomogeneousBernoulliProcess { #savvi.multinomial.InhomogeneousBernoulliProcess }
+
+```python
+multinomial.InhomogeneousBernoulliProcess(
+    self
+    alpha
+    rho
+    hypothesis
+    weights
+    k=100
+)
+```
+
+Conversion rate optimization test from @lindon2022anytimevalid.
+See [example](../examples/InhomogeneousBernoulliProcess.qmd).

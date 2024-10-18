@@ -1,0 +1,17 @@
+website:
+  sidebar:
+  - contents:
+    - reference/index.qmd
+    - contents:
+      - reference/Inference.qmd
+      - contents:
+        - reference/LinearRegression.qmd
+        section: Linear Regression
+      - contents:
+        - reference/Multinomial.qmd
+        - reference/InhomogeneousBernoulliProcess.qmd
+        - reference/InhomogeneousPoissonProcess.qmd
+        section: Multinomial
+      section: SAVI
+    id: reference
+  - id: dummy-sidebar
