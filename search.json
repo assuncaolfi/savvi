@@ -7,8 +7,8 @@
     "text": "multinomial.Multinomial(self, alpha, theta_0, k=100)\nSample ratio mismatch test from Lindon and Malek (2022). See example.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\ntheta\ncp.Variable\nMultinomial parameter.\n\n\ntheta_0\nnp.ndarray\nNull Multinomial parameter.\n\n\nalpha_0\nnp.ndarray\nPrior Dirichlet parameters.\n\n\nalpha\nnp.ndarray\nPosterior Dirichlet parameters.\n\n\ncounts\nnp.ndarray\nSuccess counts.\n\n\nd\nfloat\nSize of theta.\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the parameters.\n\n\ncalculate_p_value\nCalculate the p-value.\n\n\nupdate\nUpdate the model with new data.\n\n\nupdate_odds\nUpdate the odds ratio.\n\n\n\n\n\nmultinomial.Multinomial.calculate_conf_int(**kwargs)\nCalculate confidence intervals for the parameters.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nThe calculated confidence intervals.\n\n\n\n\n\n\n\nmultinomial.Multinomial.calculate_p_value(**kwargs)\nCalculate the p-value.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe calculated p-value.\n\n\n\n\n\n\n\nmultinomial.Multinomial.update(x)\nUpdate the model with new data.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the model.\nrequired\n\n\n\n\n\n\n\nmultinomial.Multinomial.update_odds(x)\nUpdate the odds ratio.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Multinomial",
+      "savvi",
+      "multinomial",
       "Multinomial"
     ]
   },
@@ -20,8 +20,8 @@
     "text": "Name\nType\nDescription\n\n\n\n\ntheta\ncp.Variable\nMultinomial parameter.\n\n\ntheta_0\nnp.ndarray\nNull Multinomial parameter.\n\n\nalpha_0\nnp.ndarray\nPrior Dirichlet parameters.\n\n\nalpha\nnp.ndarray\nPosterior Dirichlet parameters.\n\n\ncounts\nnp.ndarray\nSuccess counts.\n\n\nd\nfloat\nSize of theta.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Multinomial",
+      "savvi",
+      "multinomial",
       "Multinomial"
     ]
   },
@@ -33,8 +33,8 @@
     "text": "Name\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the parameters.\n\n\ncalculate_p_value\nCalculate the p-value.\n\n\nupdate\nUpdate the model with new data.\n\n\nupdate_odds\nUpdate the odds ratio.\n\n\n\n\n\nmultinomial.Multinomial.calculate_conf_int(**kwargs)\nCalculate confidence intervals for the parameters.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nThe calculated confidence intervals.\n\n\n\n\n\n\n\nmultinomial.Multinomial.calculate_p_value(**kwargs)\nCalculate the p-value.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe calculated p-value.\n\n\n\n\n\n\n\nmultinomial.Multinomial.update(x)\nUpdate the model with new data.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the model.\nrequired\n\n\n\n\n\n\n\nmultinomial.Multinomial.update_odds(x)\nUpdate the odds ratio.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Multinomial",
+      "savvi",
+      "multinomial",
       "Multinomial"
     ]
   },
@@ -46,8 +46,8 @@
     "text": "multinomial.InhomogeneousBernoulliProcess(\n    self\n    alpha\n    rho\n    hypothesis\n    weights\n    k=100\n)\nRate optimization test from Lindon and Malek (2022). See example.\n\n\n\n\n\nName\nDescription\n\n\n\n\ndelta\nCalculate the delta values.\n\n\nnames\nGet the names of the parameters.\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the parameters.\n\n\nupdate_odds\nUpdate the odds ratio.\n\n\n\n\n\nmultinomial.InhomogeneousBernoulliProcess.calculate_conf_int(**kwargs)\nCalculate confidence intervals for the parameters.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nThe calculated confidence intervals.\n\n\n\n\n\n\n\nmultinomial.InhomogeneousBernoulliProcess.update_odds(x, **kwargs)\nUpdate the odds ratio.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Multinomial",
+      "savvi",
+      "multinomial",
       "InhomogeneousBernoulliProcess"
     ]
   },
@@ -59,8 +59,8 @@
     "text": "Name\nDescription\n\n\n\n\ndelta\nCalculate the delta values.\n\n\nnames\nGet the names of the parameters.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Multinomial",
+      "savvi",
+      "multinomial",
       "InhomogeneousBernoulliProcess"
     ]
   },
@@ -72,8 +72,8 @@
     "text": "Name\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the parameters.\n\n\nupdate_odds\nUpdate the odds ratio.\n\n\n\n\n\nmultinomial.InhomogeneousBernoulliProcess.calculate_conf_int(**kwargs)\nCalculate confidence intervals for the parameters.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nThe calculated confidence intervals.\n\n\n\n\n\n\n\nmultinomial.InhomogeneousBernoulliProcess.update_odds(x, **kwargs)\nUpdate the odds ratio.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Multinomial",
+      "savvi",
+      "multinomial",
       "InhomogeneousBernoulliProcess"
     ]
   },
@@ -85,7 +85,7 @@
     "text": "Inference(self, alpha, p, tests=1)\nBase class for inference.\n\n\n\n\n\nName\nDescription\n\n\n\n\nnames\nNames of the parameters.\n\n\np\nNumber of parameters.\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nbatch\nFor each sample unit in the batch: update, infer and keep the inference object.\n\n\ncalculate_conf_int\nCalculate confidence interval.\n\n\ncalculate_p_value\nCalculate p-value.\n\n\ninfer\nCalculate confidence interval and p-value, then:\n\n\nupdate\nUpdate statistics.\n\n\n\n\n\nInference.batch(xs, **kwargs)\nFor each sample unit in the batch: update, infer and keep the inference object.\n\n\n\nInference.calculate_conf_int(**kwargs)\nCalculate confidence interval.\n\n\n\nInference.calculate_p_value(**kwargs)\nCalculate p-value.\n\n\n\nInference.infer(**kwargs)\nCalculate confidence interval and p-value, then:\n\nKeep the maximum lower bound and minimum upper bound for the confidence interval;\nKeep the minimum p-value.\n\n\n\n\nInference.update(x, **kwargs)\nUpdate statistics.",
     "crumbs": [
       "Reference",
-      "SAVI",
+      "savvi",
       "Inference"
     ]
   },
@@ -97,7 +97,7 @@
     "text": "Name\nDescription\n\n\n\n\nnames\nNames of the parameters.\n\n\np\nNumber of parameters.",
     "crumbs": [
       "Reference",
-      "SAVI",
+      "savvi",
       "Inference"
     ]
   },
@@ -109,7 +109,7 @@
     "text": "Name\nDescription\n\n\n\n\nbatch\nFor each sample unit in the batch: update, infer and keep the inference object.\n\n\ncalculate_conf_int\nCalculate confidence interval.\n\n\ncalculate_p_value\nCalculate p-value.\n\n\ninfer\nCalculate confidence interval and p-value, then:\n\n\nupdate\nUpdate statistics.\n\n\n\n\n\nInference.batch(xs, **kwargs)\nFor each sample unit in the batch: update, infer and keep the inference object.\n\n\n\nInference.calculate_conf_int(**kwargs)\nCalculate confidence interval.\n\n\n\nInference.calculate_p_value(**kwargs)\nCalculate p-value.\n\n\n\nInference.infer(**kwargs)\nCalculate confidence interval and p-value, then:\n\nKeep the maximum lower bound and minimum upper bound for the confidence interval;\nKeep the minimum p-value.\n\n\n\n\nInference.update(x, **kwargs)\nUpdate statistics.",
     "crumbs": [
       "Reference",
-      "SAVI",
+      "savvi",
       "Inference"
     ]
   },
@@ -191,8 +191,8 @@
     "text": "multinomial.InhomogeneousPoissonProcess(self, alpha, rho, weights, k=100)\nCanary software release test from Lindon and Malek (2022). See example.\n\n\n\n\n\nName\nDescription\n\n\n\n\nupdate_odds\nUpdate the odds ratio using the Multinomial update method.\n\n\n\n\n\nmultinomial.InhomogeneousPoissonProcess.update_odds(x, **kwargs)\nUpdate the odds ratio using the Multinomial update method.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Multinomial",
+      "savvi",
+      "multinomial",
       "InhomogeneousPoissonProcess"
     ]
   },
@@ -204,8 +204,8 @@
     "text": "Name\nDescription\n\n\n\n\nupdate_odds\nUpdate the odds ratio using the Multinomial update method.\n\n\n\n\n\nmultinomial.InhomogeneousPoissonProcess.update_odds(x, **kwargs)\nUpdate the odds ratio using the Multinomial update method.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Multinomial",
+      "savvi",
+      "multinomial",
       "InhomogeneousPoissonProcess"
     ]
   },
@@ -217,8 +217,8 @@
     "text": "linear_regression.LinearRegression(self, alpha, p, phi=1)\nTreatment effect tests from Lindon et al. (2024).\nCoefficients are calculated using the Recursive Least Squares algorithm.\nSee example.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nbeta\nnp.ndarray\nEstimate of regression coefficients.\n\n\ncovariance\nnp.ndarray\nEstimate of covariance matrix.\n\n\nyty\nfloat\nSum of squared response values.\n\n\nXty\nnp.ndarray\nSum of products of covariates and response.\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the coefficients.\n\n\ncalculate_p_value\nCalculate p-values for the coefficients.\n\n\nnu\nDegrees of freedom.\n\n\npredict\nPredict values for given covariates.\n\n\nsigma\nEstimate the standard deviation of the error term.\n\n\nsse\nCompute the Sum of Squared Errors (SSE).\n\n\nstandard_errors\nEstimate the standard errors of the coefficients.\n\n\nt_stats\nCalculate the t statistics of the coefficients.\n\n\nupdate\nUpdate the model with new data.\n\n\nz2\nCalculate the squared z-scores.\n\n\n\n\n\nlinear_regression.LinearRegression.calculate_conf_int()\nCalculate confidence intervals for the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nConfidence intervals for the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.calculate_p_value()\nCalculate p-values for the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nP-values for the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.nu()\nDegrees of freedom.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nint\nDegrees of freedom.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.predict(X)\nPredict values for given covariates.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nX\nnp.ndarray\nMatrix of covariates.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nPredicted values.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.sigma()\nEstimate the standard deviation of the error term.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nEstimate of the standard deviation of the error term.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.sse()\nCompute the Sum of Squared Errors (SSE).\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nSSE value.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.standard_errors()\nEstimate the standard errors of the coefficients.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nEstimate of the standard errors of the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.t_stats()\nCalculate the t statistics of the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nT statistics of the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.update(xy)\nUpdate the model with new data.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nxy\nTuple[np.ndarray, float]\nTuple of response and covariate values.\nrequired\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.z2()\nCalculate the squared z-scores.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nSquared z-scores.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Linear Regression",
+      "savvi",
+      "linear_regression",
       "LinearRegression"
     ]
   },
@@ -230,8 +230,8 @@
     "text": "Name\nType\nDescription\n\n\n\n\nbeta\nnp.ndarray\nEstimate of regression coefficients.\n\n\ncovariance\nnp.ndarray\nEstimate of covariance matrix.\n\n\nyty\nfloat\nSum of squared response values.\n\n\nXty\nnp.ndarray\nSum of products of covariates and response.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Linear Regression",
+      "savvi",
+      "linear_regression",
       "LinearRegression"
     ]
   },
@@ -243,8 +243,8 @@
     "text": "Name\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the coefficients.\n\n\ncalculate_p_value\nCalculate p-values for the coefficients.\n\n\nnu\nDegrees of freedom.\n\n\npredict\nPredict values for given covariates.\n\n\nsigma\nEstimate the standard deviation of the error term.\n\n\nsse\nCompute the Sum of Squared Errors (SSE).\n\n\nstandard_errors\nEstimate the standard errors of the coefficients.\n\n\nt_stats\nCalculate the t statistics of the coefficients.\n\n\nupdate\nUpdate the model with new data.\n\n\nz2\nCalculate the squared z-scores.\n\n\n\n\n\nlinear_regression.LinearRegression.calculate_conf_int()\nCalculate confidence intervals for the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nConfidence intervals for the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.calculate_p_value()\nCalculate p-values for the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nP-values for the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.nu()\nDegrees of freedom.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nint\nDegrees of freedom.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.predict(X)\nPredict values for given covariates.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nX\nnp.ndarray\nMatrix of covariates.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nPredicted values.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.sigma()\nEstimate the standard deviation of the error term.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nEstimate of the standard deviation of the error term.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.sse()\nCompute the Sum of Squared Errors (SSE).\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nSSE value.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.standard_errors()\nEstimate the standard errors of the coefficients.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nEstimate of the standard errors of the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.t_stats()\nCalculate the t statistics of the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nT statistics of the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.update(xy)\nUpdate the model with new data.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nxy\nTuple[np.ndarray, float]\nTuple of response and covariate values.\nrequired\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.z2()\nCalculate the squared z-scores.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nSquared z-scores.",
     "crumbs": [
       "Reference",
-      "SAVI",
-      "Linear Regression",
+      "savvi",
+      "linear_regression",
       "LinearRegression"
     ]
   },
@@ -259,8 +259,8 @@
     ]
   },
   {
-    "objectID": "reference/index.html#savi",
-    "href": "reference/index.html#savi",
+    "objectID": "reference/index.html#savvi",
+    "href": "reference/index.html#savvi",
     "title": "Reference",
     "section": "",
     "text": "Inference\nBase class for inference.\n\n\n\n\n\n\n\n\nLinearRegression\nTreatment effect tests from Lindon et al. (2024).\n\n\n\n\n\n\n\n\n\nMultinomial\nSample ratio mismatch test from Lindon and Malek (2022).\n\n\nInhomogeneousBernoulliProcess\nRate optimization test from Lindon and Malek (2022).\n\n\nInhomogeneousPoissonProcess\nCanary software release test from Lindon and Malek (2022).",
