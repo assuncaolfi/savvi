@@ -3,11 +3,12 @@ from typing import List, Tuple
 import numpy as np
 
 
+# NOTE f-test can't be implemented online
 class LinearRegression(Inference):
     """
     Treatment effect tests from @lindon2024anytimevalidlinearmodelsregression.
 
-    Parameters are calculated using the Recursive Least Squares algorithm.
+    Coefficients are calculated using the Recursive Least Squares algorithm.
 
     See [example](../examples/linear_regression.qmd).
 
@@ -21,20 +22,8 @@ class LinearRegression(Inference):
         Sum of squared response values.
     Xty : np.ndarray
         Sum of products of covariates and response.
-
-    Parameters
-    ----------
-    p : int
-        Number of covariates.
-    alpha : float
-        Significance level for inference.
-    phi : float, optional
-        Prior scale (default is 1).
     """
 
-    p: int
-    lamb: float
-    n: int
     beta: np.ndarray
     covariance: np.ndarray
     yty: float
@@ -46,14 +35,12 @@ class LinearRegression(Inference):
 
         Parameters
         ----------
-        p : int
-            Number of covariates.
         alpha : float
             Significance level for inference.
+        p : int
+            Number of covariates.
         phi : float, optional
             Prior scale (default is 1).
-        lamb : float, optional
-            Forgetting factor (default is 1).
         """
         self.lamb = 1  # TODO remove
         self.phi = phi
@@ -90,6 +77,44 @@ class LinearRegression(Inference):
             1 / self.lamb * (self.covariance - np.outer(k, np.dot(x, self.covariance)))
         )
         self.covariance = (self.covariance + self.covariance.T) / 2  # Ensure symmetry
+
+    def calculate_conf_int(self) -> np.ndarray:
+        """
+        Calculate confidence intervals for the coefficients.
+
+        Returns
+        -------
+        np.ndarray
+            Confidence intervals for the coefficients.
+        """
+        if self.nu() <= 0:
+            return self.conf_int
+        stderrs = self.standard_errors()
+        r = self.phi / (self.phi + self.z2())
+        radii = stderrs * np.sqrt(
+            self.nu()
+            * (
+                (1 - (r * self.alpha**2) ** (1 / (self.nu() + 1)))
+                / np.maximum(0, ((r * self.alpha**2) ** (1 / (self.nu() + 1))) - r)
+            )
+        )
+        lowers = self.beta - radii
+        uppers = self.beta + radii
+        return np.column_stack((lowers, uppers))
+
+    def calculate_p_value(self) -> np.ndarray:
+        """
+        Calculate p-values for the coefficients.
+
+        Returns
+        -------
+        np.ndarray
+            P-values for the coefficients.
+        """
+        if self.nu() <= 0:
+            return self.p_value
+        t2 = self.t_stats() ** 2
+        return np.exp(-1 * log_bf(t2, self.nu(), self.phi, self.z2()))
 
     def predict(self, X: np.ndarray) -> np.ndarray:
         """
@@ -151,38 +176,29 @@ class LinearRegression(Inference):
         """
         return self.beta / self.standard_errors()
 
-    # NOTE f-test can't be implemented online
-    def infer(self) -> None:
+    def nu(self) -> int:
         """
-        Perform statistical inference on the coefficients.
-        """
-        nu = self.n - self.p - 1
-        if nu <= 0:
-            return
+        Degrees of freedom.
 
-        t2 = self.t_stats() ** 2
+        Returns
+        -------
+        int
+            Degrees of freedom.
+        """
+        return self.n - self.p - 1
+
+    def z2(self) -> np.ndarray:
+        """
+        Calculate the squared z-scores.
+
+        Returns
+        -------
+        np.ndarray
+            Squared z-scores.
+        """
         stderrs = self.standard_errors()
         s = self.sigma()
-        z2 = (s / stderrs) ** 2
-
-        # Calculate p-values
-        p = np.exp(-1 * log_bf(t2, nu, self.phi, z2))
-
-        # Calculate confidence intervals
-        r = self.phi / (self.phi + z2)
-        radii = stderrs * np.sqrt(
-            nu
-            * (
-                (1 - (r * self.alpha**2) ** (1 / (nu + 1)))
-                / np.maximum(0, ((r * self.alpha**2) ** (1 / (nu + 1))) - r)
-            )
-        )
-        lowers = self.beta - radii
-        uppers = self.beta + radii
-        conf_int = np.column_stack((lowers, uppers))
-
-        # Update inference
-        super().intersect(p, conf_int)
+        return (s / stderrs) ** 2
 
 
 def log_bf(t2: np.ndarray, nu: float, phi: float, z2: np.ndarray) -> np.ndarray:

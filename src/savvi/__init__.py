@@ -32,6 +32,14 @@ class Inference:
         """
         return self.conf_int.shape[0]
 
+    @property
+    @abstractmethod
+    def names(self) -> List[str]:
+        """
+        Names of the parameters.
+        """
+        pass
+
     @abstractmethod
     def update(self, x: np.ndarray, **kwargs) -> None:
         """
