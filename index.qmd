@@ -7,7 +7,7 @@ format:
 ---
 
 <!-- badges: start -->
-
+[![Quarto Publish](https://github.com/assuncaolfi/savvi/actions/workflows/publish.yml/badge.svg)](https://github.com/assuncaolfi/savvi/actions/workflows/publish.yml)
 <!-- badges: end -->
 
 savvi is a package for Safe Anytime Valid Inference. Also, it's a savvy pun.
