@@ -162,3 +162,5 @@ cython_debug/
 #.idea/
 
 /.quarto/
+examples/.ipynb_checkpoints
+examples/.jupyter_cache
