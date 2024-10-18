@@ -1,4 +1,5 @@
 ---
+title: Multinomial
 jupyter:
   jupytext:
     text_representation:
@@ -12,32 +13,19 @@ jupyter:
     name: python3
 ---
 
+_Application: sample ratio mismatch._ 
 
-Implementation of tests from Anytime-Valid Inference for Multinomial Count Data [@lindon2022anytimevalid]. Application examples were also adapted from the same publication.
-
-
-```{python}
-#| label: black
-#| echo: false
-#| include: false
-import jupyter_black
-
-jupyter_black.load(lab=False)
-```
-
-#### Multinomial Test
-
-_Application: sample ratio mismatch._
+Based on @lindon2022anytimevalid.
 
 Consider a new experimental unit $n$ is assigned to one of $i \in \{1, 2, 3\}$ groups with probabilities $\mathbf{\theta} = [0.1, 0.3, 0.6]$. Therefore, groups are $\mathrm{Multinomial}(1, \mathbf{\theta})$ distributed.
 
 ```{python}
-#| label: multi-data
+#| label: data
 import numpy as np
 
-np.random.seed(1)
 theta = np.array([0.1, 0.3, 0.6])
 size = 1000
+np.random.seed(1)
 xs = np.random.multinomial(1, theta, size=size)
 print(xs)
 ```
@@ -51,265 +39,51 @@ H_1: \mathbf{\theta} \neq \mathbf{\theta_0}
 \end{align}
 $$
 
-with $\mathbf{\theta_0} = [0.1, 0.3, 0.6]$, as well as estimate confidence sequences for $\theta$ at a significance level $u$ using the default Multinomial test:
+with $\mathbf{\theta_0} = [0.1, 0.4, 0.5]$, as well as estimate confidence sequences for $\theta$ at a significance level $\alpha$ using the default Multinomial test:
 
 ```{python}
-#| label: multi-hypothesis
-from savvi import Multinomial
+#| label: hypothesis
+from savvi.multinomial import Multinomial
 
-u = 0.05
+alpha = 0.05
 theta_0 = np.array([0.1, 0.4, 0.5])
-test = Multinomial(0.05, theta_0)
+multinomial = Multinomial(0.05, theta_0)
 ```
 
-For each new unit sample $n$, we run the test. If $p_n < u$, we have the option to stop running:
+For each new unit sample $n$, we run the test. If $p_n < \alpha$, we have the option to stop running:
 
 ```{python}
-#| label: multi-sequence
+#| label: sequence
 #| warning: false
 import cvxpy as cp
 
-
-def run_sequence(test, xs, **kwargs):
-    size = xs.shape[0]
-    sequence = [None] * size
-    stop = np.inf
-    for n, x in enumerate(xs):
-        test.update(x, **kwargs)
-        sequence[n] = {
-            "n": test.n,
-            "p": test.p,
-            "mle": test.mle.tolist(),
-            "confidence_set": test.confidence_set.tolist(),
-        }
-        if test.p <= u:
-            stop = min(stop, n)
-    optional_stop = sequence[stop]
-    return sequence, optional_stop
-
-
 solver = cp.CLARABEL
-sequence, optional_stop = run_sequence(test, xs, solver=solver)
-optional_stop
+sequence = multinomial.batch(xs, solver=solver)
+optional_stop = next(s for s in sequence if s.p_value <= alpha)
+vars(optional_stop)
 ```
 
 ```{python}
-#| label: multi-plot
+#| label: fig
 #| code-fold: true
-import polars as pl
-import seaborn.objects as so
+%config InlineBackend.figure_formats = ["svg"]
 
+from savvi.utils import plot
 
-def to_df(sequence, parameter, value):
-    size = len(sequence)
-    data = (
-        pl.from_dicts(sequence)
-        .explode("confidence_set", "mle")
-        .with_columns(
-            confidence_set=pl.col("confidence_set").list.to_struct(
-                fields=["lower", "upper"]
-            ),
-            parameter=pl.Series(parameter * size),
-            value=pl.Series(value.tolist() * size),
-        )
-        .unnest("confidence_set")
-    )
-    return data
-
-
-def plot(data):
-    plot = (
-        so.Plot(data.to_pandas(), x="n")
-        .add(so.Line(color="black"), y="p", label="P-value")
-        .add(so.Line(linestyle="dashed"), y="value", color="parameter", label="True Parameter")
-        .add(so.Line(), y="mle", color="parameter", label="MLE")
-        .add(
-            so.Band(alpha=1 / theta.size), 
-            ymin="lower", ymax="upper", color="parameter", label="Confidence Set"
-        )
-        .label(color="", y="")
-        .limit(y=(-0.05, 1.05))
-    )
-    return plot
-
-
-parameter = [f"$\\theta_{i}$" for i in np.arange(0, theta.size)]
-data = to_df(sequence, parameter, theta)
-plot(data)
+plot(sequence, theta);
 ```
 
 ```{python}
-#| label: multi-test
+#| label: test
 #| echo: false
-def doc_test(optional_stop, optional_stop_test):
-    for k in optional_stop_test.keys():
-        np.testing.assert_almost_equal(optional_stop[k], optional_stop_test[k])
-
-
-optional_stop_test = {
-    "n": 402,
-    "p": 0.04845591105969517,
-    "confidence_set": [
+np.testing.assert_almost_equal(optional_stop.n, 402)
+np.testing.assert_almost_equal(optional_stop.p_value, 0.04845591105969517)
+np.testing.assert_almost_equal(
+    optional_stop.conf_int,
+    [
         [0.056684768115202705, 0.1493967591525672],
         [0.2608987241982874, 0.4028302603098119],
         [0.4971209299792429, 0.6517617329309116],
     ],
-}
-doc_test(optional_stop, optional_stop_test)
-```
-
-#### Inhomogeneous Bernoulli Process
-
-_Application: conversion rate optimization when all groups share a common multiplicative time-varying effect._
-
-Suppose a new experimental unit $n$ is randomly assigned to one of $i \in \{1, 2, 3\}$ experiment treatment groups at time $t$, with assignment probabilities $\mathbf{\rho} = [0.1, 0.3, 0.6]$, and a Bernoulli outcome is observed with probability $p_i(t) = \exp(\mu(t) + \delta_{i})$, $\mathbf{\delta} = [\log 0.2, \log 0.3, \log 0.4]$. The conditional probability that the next Bernoulli success comes from group $i$ is
-
-$$
-\theta_i = \frac{\rho_i \exp(\delta_i)}{\sum_{j=1}^d \rho_j \exp(\delta_j)}.
-$$
-
-Therefore, the next Bernoulli success comes from a random group, $\mathrm{Multinomial}(1, \mathbf{\theta})$ distributed, with $\mathbf{\theta} \approx [0.05, 0.25, 0.68]$.
-
-```{python}
-#| label: ibp-data
-#| warning: false
-rho = np.array([0.1, 0.3, 0.6])
-delta = np.log([0.2, 0.3, 0.4])
-theta = rho * np.exp(delta) / np.sum(rho * np.exp(delta))
-size = 5250
-xs = np.random.multinomial(1, theta, size=size)
-print(xs)
-```
-
-We can test the hypothesis
-
-$$
-\begin{align}
-H_0: \delta_0 \geq \delta_1, \delta_0 \geq \delta_2 \\
-H_1: \delta_0 \lt \delta_1, \delta_0 \lt \delta_2
-\end{align}
-$$
-
-using a Multinomial test with $\mathbf{\theta}_0 = \mathbf{\rho}$ and a list of inequalities for $\mathbf{\delta}$:
-
-```{python}
-#| label: ibp-hypothesis
-test = Multinomial(u, rho)
-test.hypothesis = [
-    test.delta[0] >= test.delta[1],
-    test.delta[0] >= test.delta[2],
-]
-```
-
-We can also set contrast weights $[-1, 0, 1]$ and $[0, -1, 1]$ to estimate confidence sequences for $\delta_2 - \delta_0$ and $\delta_2 - \delta_1$ at a significance level $u$:
-
-```{python}
-#| label: ibp-weights
-test.weights = np.array([[-1, 0, 1], [0, -1, 1]])
-```
-
-For each new unit sample $n$, we run the test. If $p_n < u$, we have the option to stop running:
-
-```{python}
-#| label: ibp-sequence
-#| warning: false
-sequence, optional_stop = run_sequence(test, xs, solver=solver)
-optional_stop
-```
-
-```{python}
-#| label: ibp-plot
-#| code-fold: true
-parameter = ["$\\delta_2$ - $\\delta_0$", "$\\delta_2$ - $\\delta_1$"]
-contrasts = test.weights @ delta
-data = to_df(sequence, parameter, contrasts)
-plot(data)
-```
-
-```{python}
-#| label: ibp-test
-#| echo: false
-optional_stop_test = {
-    "n": 210,
-    "p": 0.04861129531258319,
-    "confidence_set": [
-        [0.0020567122072947704, 1.4880052569753974],
-        [-0.3216759113208812, 0.4627565948192972],
-    ],
-}
-doc_test(optional_stop, optional_stop_test)
-```
-
-#### Inhomogeneous Poisson Counting Process
-
-_Application: software canary testing when all processes share a common multiplicative time-varying effect._
-
-Consider points are observed from one of $i \in \{1, 2\}$ Poisson point processes with intensity functions $\lambda_i(t) = \rho_i \exp(\delta_i) \lambda(t)$, with $\rho = [0.8, 0.2]$ and $\delta = [1.5, 2]$. The probability that the next point comes from process $i$ is
-
-$$
-\theta_i = \frac{\rho_i \exp(\delta_i)}{\sum_{j=1}^d \rho_j \exp(\delta_j)}.
-$$
-
-Therefore, the next point comes from a random process, distributed as $\mathrm{Multinomial}(1, \mathbf{\theta})$, with $\mathbf{\theta} \approx [0.7, 0.3]$.
-
-```{python}
-#| label: pois-data
-rho = np.array([0.8, 0.2])
-delta = np.array([1.5, 2])
-theta = rho * np.exp(delta) / np.sum(rho * np.exp(delta))
-size = 1500
-xs = np.random.multinomial(1, theta, size=size)
-print(xs)
-```
-
-We can test the hypothesis
-
-$$
-\begin{align}
-H_0: \delta_1 - \delta_0 = 0 \quad (\mathbf{\theta} = \mathbf{\rho}) \\
-H_1: \delta_1 - \delta_0 \neq 0  \quad (\mathbf{\theta} \neq \mathbf{\rho})
-\end{align}
-$$
-
-using a Multinomial test with $\mathbf{\theta}_0 = \mathbf{\rho}$:
-
-```{python}
-#| label: pois-hypothesis
-test = Multinomial(u, rho)
-```
-
-We can also set contrast weights $[-1, 1]$ to estimate confidence sequences for $\delta_1 - \delta_0$ at a significance level $u$:
-
-```{python}
-#| label: pois-weights
-test.weights = np.array([[-1, 1]])
-```
-
-For each new unit sample $n$, we run the test. If $p_n < u$, we have the option to stop running:
-
-```{python}
-#| label: pois-sequence
-#| warning: false
-sequence, optional_stop = run_sequence(test, xs, solver=solver)
-optional_stop
-```
-
-```{python}
-#| label: pois-plot
-#| code-fold: true
-parameter = ["$\\delta_1$ - $\\delta_0$"]
-contrasts = test.weights @ delta
-data = to_df(sequence, parameter, contrasts)
-plot(data)
-```
-
-```{python}
-#| label: pois-test
-#| echo: false
-optional_stop_test = {
-    "n": 168,
-    "p": 0.04675270375081281,
-    "confidence_set": [[0.0036592933902448955, 0.9085292981365327]],
-}
-doc_test(optional_stop, optional_stop_test)
+)
 ```

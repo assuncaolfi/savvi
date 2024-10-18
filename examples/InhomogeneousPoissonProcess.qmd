@@ -1,0 +1,98 @@
+---
+title: Inhomogeneous Poisson Process
+jupyter:
+  jupytext:
+    text_representation:
+      extension: .qmd
+      format_name: quarto
+      format_version: '1.0'
+      jupytext_version: 1.16.2
+  kernelspec:
+    display_name: Python 3 (ipykernel)
+    language: python
+    name: python3
+---
+
+_Application: software canary testing when all processes share a common multiplicative time-varying effect._
+
+Based on @lindon2022anytimevalid.
+
+Consider points are observed from one of $i \in \{1, 2\}$ Poisson point processes with intensity functions $\lambda_i(t) = \rho_i \exp(\delta_i) \lambda(t)$, with $\rho = [0.8, 0.2]$ and $\delta = [1.5, 2]$. The probability that the next point comes from process $i$ is
+
+$$
+\theta_i = \frac{\rho_i \exp(\delta_i)}{\sum_{j=1}^d \rho_j \exp(\delta_j)}.
+$$
+
+Therefore, the next point comes from a random process, distributed as $\mathrm{Multinomial}(1, \mathbf{\theta})$, with $\mathbf{\theta} \approx [0.7, 0.3]$.
+
+```{python}
+#| label: data
+import numpy as np
+
+rho = np.array([0.8, 0.2])
+delta = np.array([1.5, 2])
+theta = rho * np.exp(delta) / np.sum(rho * np.exp(delta))
+size = 1500
+np.random.seed(1)
+xs = np.random.multinomial(1, theta, size=size)
+print(xs)
+```
+
+We can test the hypothesis
+
+$$
+\begin{align}
+H_0: \delta_1 - \delta_0 = 0 \quad (\mathbf{\theta} = \mathbf{\rho}) \\
+H_1: \delta_1 - \delta_0 \neq 0  \quad (\mathbf{\theta} \neq \mathbf{\rho})
+\end{align}
+$$
+
+using a Multinomial test with $\alpha = 0.05$, $\mathbf{\theta}_0 = \mathbf{\rho}$ and contrast weights $[-1, 1]$ to estimate a confidence sequence for $\delta_1 - \delta_0$:
+
+```{python}
+#| label: hypothesis
+from savvi.multinomial import InhomogeneousPoissonProcess
+
+alpha = 0.05
+weights = np.array([[-1, 1]])
+ipp = InhomogeneousPoissonProcess(alpha, rho, weights)
+```
+
+For each new unit sample $n$, we run the test. If $p_n < \alpha$, we have the option to stop running:
+
+```{python}
+#| label: sequence
+#| warning: false
+import cvxpy as cp
+
+solver = cp.CLARABEL
+sequence = ipp.batch(xs, solver=solver)
+optional_stop = next(s for s in sequence if s.p_value <= alpha)
+vars(optional_stop)
+```
+
+```{python}
+#| label: plot
+%config InlineBackend.figure_formats = ["svg"]
+
+import matplotlib.pyplot as plt
+from savvi.utils import plot
+
+contrasts = ipp.weights @ delta
+_, ax1, _ = plot(sequence, contrasts)
+ax1.set_ylim(-1, 2)
+plt.show()
+```
+
+```{python}
+#| label: test
+#| echo: false
+np.testing.assert_almost_equal(optional_stop.n, 210)
+np.testing.assert_almost_equal(optional_stop.p_value, 0.045579631759249686)
+np.testing.assert_almost_equal(
+    optional_stop.conf_int,
+    [
+        [0.00464625, 0.75493987],
+    ],
+)
+```
