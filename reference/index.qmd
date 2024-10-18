@@ -1,18 +1,18 @@
 # Reference {.doc .doc-index}
 
-## SAVI
+## savvi
 
 | | |
 | --- | --- |
 | [Inference](Inference.qmd#savvi.Inference) | Base class for inference. |
 
-### Linear Regression
+### linear_regression
 
 | | |
 | --- | --- |
 | [LinearRegression](LinearRegression.qmd#savvi.linear_regression.LinearRegression) | Treatment effect tests from @lindon2024anytimevalidlinearmodelsregression. |
 
-### Multinomial
+### multinomial
 
 | | |
 | --- | --- |

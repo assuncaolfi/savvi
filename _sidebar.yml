@@ -6,12 +6,12 @@ website:
       - reference/Inference.qmd
       - contents:
         - reference/LinearRegression.qmd
-        section: Linear Regression
+        section: linear_regression
       - contents:
         - reference/Multinomial.qmd
         - reference/InhomogeneousBernoulliProcess.qmd
         - reference/InhomogeneousPoissonProcess.qmd
-        section: Multinomial
-      section: SAVI
+        section: multinomial
+      section: savvi
     id: reference
   - id: dummy-sidebar
