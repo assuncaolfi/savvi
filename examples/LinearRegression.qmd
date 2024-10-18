@@ -1,5 +1,6 @@
 ---
 title: Linear Regression
+subtitle: '[Reference](../reference/LinearRegression.qmd)'
 jupyter:
   jupytext:
     text_representation:
@@ -14,8 +15,6 @@ jupyter:
 ---
 
 _Application: testing of treatment effects while adjusting for pre-treatment covariables._ 
-
-Based on @lindon2024anytimevalidlinearmodelsregression.
 
 Consider a new experimental unit $n$. This unit has a pre-treatment measurement $x_n \in \mathbb{R}$ and is assigned a treatment $z_n \in \{0, 1\}$. After the treatment, the unit produces an outcome:
 
@@ -73,7 +72,7 @@ vars(optional_stop)
 ```
 
 ```{python}
-#| label: fig
+#| label: viz
 %config InlineBackend.figure_formats = ["svg"]
 from savvi.utils import plot
 

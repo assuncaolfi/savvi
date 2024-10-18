@@ -39,7 +39,7 @@ H_1: \mathbf{\theta} \neq \mathbf{\theta_0}
 \end{align}
 $$
 
-with $\mathbf{\theta_0} = [0.1, 0.4, 0.5]$, as well as estimate confidence sequences for $\theta$ at a significance level $\alpha$ using the default Multinomial test:
+with $\mathbf{\theta_0} = [0.1, 0.4, 0.5]$, as well as estimate confidence sequences for $\theta$ at a significance level $\alpha$, using the default Multinomial test:
 
 ```{python}
 #| label: hypothesis
@@ -56,9 +56,7 @@ For each new unit sample $n$, we run the test. If $p_n < \alpha$, we have the op
 #| label: sequence
 #| warning: false
 import cvxpy as cp
-
-solver = cp.CLARABEL
-sequence = multinomial.batch(xs, solver=solver)
+sequence = multinomial.batch(xs, solver=cp.CLARABEL)
 optional_stop = next(s for s in sequence if s.p_value <= alpha)
 vars(optional_stop)
 ```
