@@ -9,11 +9,82 @@ See [example](../examples/Multinomial.qmd).
 
 ## Attributes {.doc-section .doc-section-attributes}
 
-| Name    | Type                  | Description                     |
-|---------|-----------------------|---------------------------------|
-| theta   | cp.Variable           | Multinomial parameter.          |
-| theta_0 | NDArray\[np.float64\] | Null Multinomial parameter.     |
-| alpha_0 | NDArray\[np.float64\] | Prior Dirichlet parameters.     |
-| alpha   | NDArray\[np.float64\] | Posterior Dirichlet parameters. |
-| counts  | NDArray\[np.int64\]   | Success counts.                 |
-| d       | float                 | Size of theta.                  |
+| Name    | Type        | Description                     |
+|---------|-------------|---------------------------------|
+| theta   | cp.Variable | Multinomial parameter.          |
+| theta_0 | np.ndarray  | Null Multinomial parameter.     |
+| alpha_0 | np.ndarray  | Prior Dirichlet parameters.     |
+| alpha   | np.ndarray  | Posterior Dirichlet parameters. |
+| counts  | np.ndarray  | Success counts.                 |
+| d       | float       | Size of theta.                  |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [calculate_conf_int](#savvi.multinomial.Multinomial.calculate_conf_int) | Calculate confidence intervals for the parameters. |
+| [calculate_p_value](#savvi.multinomial.Multinomial.calculate_p_value) | Calculate the p-value. |
+| [update](#savvi.multinomial.Multinomial.update) | Update the model with new data. |
+| [update_odds](#savvi.multinomial.Multinomial.update_odds) | Update the odds ratio. |
+
+### calculate_conf_int { #savvi.multinomial.Multinomial.calculate_conf_int }
+
+```python
+multinomial.Multinomial.calculate_conf_int(**kwargs)
+```
+
+Calculate confidence intervals for the parameters.
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type       | Description                          |
+|--------|------------|--------------------------------------|
+|        | np.ndarray | The calculated confidence intervals. |
+
+### calculate_p_value { #savvi.multinomial.Multinomial.calculate_p_value }
+
+```python
+multinomial.Multinomial.calculate_p_value(**kwargs)
+```
+
+Calculate the p-value.
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type   | Description             |
+|--------|--------|-------------------------|
+|        | float  | The calculated p-value. |
+
+### update { #savvi.multinomial.Multinomial.update }
+
+```python
+multinomial.Multinomial.update(x)
+```
+
+Update the model with new data.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type       | Description                   | Default    |
+|--------|------------|-------------------------------|------------|
+| x      | np.ndarray | New data to update the model. | _required_ |
+
+### update_odds { #savvi.multinomial.Multinomial.update_odds }
+
+```python
+multinomial.Multinomial.update_odds(x)
+```
+
+Update the odds ratio.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type       | Description                        | Default    |
+|--------|------------|------------------------------------|------------|
+| x      | np.ndarray | New data to update the odds ratio. | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type   | Description             |
+|--------|--------|-------------------------|
+|        | float  | The updated odds ratio. |

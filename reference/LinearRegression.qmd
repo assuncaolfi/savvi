@@ -6,7 +6,7 @@ linear_regression.LinearRegression(self, alpha, p, phi=1)
 
 Treatment effect tests from @lindon2024anytimevalidlinearmodelsregression.
 
-Parameters are calculated using the Recursive Least Squares algorithm.
+Coefficients are calculated using the Recursive Least Squares algorithm.
 
 See [example](../examples/linear_regression.qmd).
 
@@ -19,33 +19,62 @@ See [example](../examples/linear_regression.qmd).
 | yty        | float      | Sum of squared response values.             |
 | Xty        | np.ndarray | Sum of products of covariates and response. |
 
-## Parameters {.doc-section .doc-section-parameters}
-
-| Name   | Type   | Description                       | Default    |
-|--------|--------|-----------------------------------|------------|
-| p      | int    | Number of covariates.             | _required_ |
-| alpha  | float  | Significance level for inference. | _required_ |
-| phi    | float  | Prior scale (default is 1).       | `1`        |
-
 ## Methods
 
 | Name | Description |
 | --- | --- |
-| [infer](#savvi.linear_regression.LinearRegression.infer) | Perform statistical inference on the coefficients. |
+| [calculate_conf_int](#savvi.linear_regression.LinearRegression.calculate_conf_int) | Calculate confidence intervals for the coefficients. |
+| [calculate_p_value](#savvi.linear_regression.LinearRegression.calculate_p_value) | Calculate p-values for the coefficients. |
+| [nu](#savvi.linear_regression.LinearRegression.nu) | Degrees of freedom. |
 | [predict](#savvi.linear_regression.LinearRegression.predict) | Predict values for given covariates. |
 | [sigma](#savvi.linear_regression.LinearRegression.sigma) | Estimate the standard deviation of the error term. |
 | [sse](#savvi.linear_regression.LinearRegression.sse) | Compute the Sum of Squared Errors (SSE). |
 | [standard_errors](#savvi.linear_regression.LinearRegression.standard_errors) | Estimate the standard errors of the coefficients. |
 | [t_stats](#savvi.linear_regression.LinearRegression.t_stats) | Calculate the t statistics of the coefficients. |
 | [update](#savvi.linear_regression.LinearRegression.update) | Update the model with new data. |
+| [z2](#savvi.linear_regression.LinearRegression.z2) | Calculate the squared z-scores. |
 
-### infer { #savvi.linear_regression.LinearRegression.infer }
+### calculate_conf_int { #savvi.linear_regression.LinearRegression.calculate_conf_int }
 
 ```python
-linear_regression.LinearRegression.infer()
+linear_regression.LinearRegression.calculate_conf_int()
 ```
 
-Perform statistical inference on the coefficients.
+Calculate confidence intervals for the coefficients.
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type       | Description                                |
+|--------|------------|--------------------------------------------|
+|        | np.ndarray | Confidence intervals for the coefficients. |
+
+### calculate_p_value { #savvi.linear_regression.LinearRegression.calculate_p_value }
+
+```python
+linear_regression.LinearRegression.calculate_p_value()
+```
+
+Calculate p-values for the coefficients.
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type       | Description                    |
+|--------|------------|--------------------------------|
+|        | np.ndarray | P-values for the coefficients. |
+
+### nu { #savvi.linear_regression.LinearRegression.nu }
+
+```python
+linear_regression.LinearRegression.nu()
+```
+
+Degrees of freedom.
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type   | Description         |
+|--------|--------|---------------------|
+|        | int    | Degrees of freedom. |
 
 ### predict { #savvi.linear_regression.LinearRegression.predict }
 
@@ -136,3 +165,17 @@ Update the model with new data.
 | Name   | Type                       | Description                             | Default    |
 |--------|----------------------------|-----------------------------------------|------------|
 | xy     | Tuple\[np.ndarray, float\] | Tuple of response and covariate values. | _required_ |
+
+### z2 { #savvi.linear_regression.LinearRegression.z2 }
+
+```python
+linear_regression.LinearRegression.z2()
+```
+
+Calculate the squared z-scores.
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type       | Description       |
+|--------|------------|-------------------|
+|        | np.ndarray | Squared z-scores. |

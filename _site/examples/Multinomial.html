@@ -235,7 +235,7 @@ window.Quarto = {
 <p><em>Application: sample ratio mismatch.</em></p>
 <p>Based on <span class="citation" data-cites="lindon2022anytimevalid">Lindon and Malek (<a href="#ref-lindon2022anytimevalid" role="doc-biblioref">2022</a>)</span>.</p>
 <p>Consider a new experimental unit <span class="math inline">\(n\)</span> is assigned to one of <span class="math inline">\(i \in \{1, 2, 3\}\)</span> groups with probabilities <span class="math inline">\(\mathbf{\theta} = [0.1, 0.3, 0.6]\)</span>. Therefore, groups are <span class="math inline">\(\mathrm{Multinomial}(1, \mathbf{\theta})\)</span> distributed.</p>
-<div id="data" class="cell" data-execution_count="1">
+<div id="data" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> np.array([<span class="fl">0.1</span>, <span class="fl">0.3</span>, <span class="fl">0.6</span>])</span>
@@ -260,8 +260,8 @@ H_0: \mathbf{\theta} = \mathbf{\theta_0} \\
 H_1: \mathbf{\theta} \neq \mathbf{\theta_0}
 \end{align}
 \]</span></p>
-<p>with <span class="math inline">\(\mathbf{\theta_0} = [0.1, 0.4, 0.5]\)</span>, as well as estimate confidence sequences for <span class="math inline">\(\theta\)</span> at a significance level <span class="math inline">\(\alpha\)</span> using the default Multinomial test:</p>
-<div id="hypothesis" class="cell" data-execution_count="2">
+<p>with <span class="math inline">\(\mathbf{\theta_0} = [0.1, 0.4, 0.5]\)</span>, as well as estimate confidence sequences for <span class="math inline">\(\theta\)</span> at a significance level <span class="math inline">\(\alpha\)</span>, using the default Multinomial test:</p>
+<div id="hypothesis" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> savvi.multinomial <span class="im">import</span> Multinomial</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
@@ -269,13 +269,11 @@ H_1: \mathbf{\theta} \neq \mathbf{\theta_0}
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>multinomial <span class="op">=</span> Multinomial(<span class="fl">0.05</span>, theta_0)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>For each new unit sample <span class="math inline">\(n\)</span>, we run the test. If <span class="math inline">\(p_n &lt; \alpha\)</span>, we have the option to stop running:</p>
-<div id="cell-sequence" class="cell" data-execution_count="3">
+<div id="cell-sequence" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cvxpy <span class="im">as</span> cp</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> cp.CLARABEL</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sequence <span class="op">=</span> multinomial.batch(xs, solver<span class="op">=</span>solver)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>optional_stop <span class="op">=</span> <span class="bu">next</span>(s <span class="cf">for</span> s <span class="kw">in</span> sequence <span class="cf">if</span> s.p_value <span class="op">&lt;=</span> alpha)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(optional_stop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>sequence <span class="op">=</span> multinomial.batch(xs, solver<span class="op">=</span>cp.CLARABEL)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>optional_stop <span class="op">=</span> <span class="bu">next</span>(s <span class="cf">for</span> s <span class="kw">in</span> sequence <span class="cf">if</span> s.p_value <span class="op">&lt;=</span> alpha)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(optional_stop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div id="sequence" class="cell-output cell-output-display" data-execution_count="3">
 <pre><code>{'n': 402,
  'alpha': 0.05,
@@ -289,7 +287,7 @@ H_1: \mathbf{\theta} \neq \mathbf{\theta_0}
  'odds': 20.637317060617267}</code></pre>
 </div>
 </div>
-<div id="cell-fig" class="cell" data-execution_count="4">
+<div id="cell-fig" class="cell" data-execution_count="5">
 <details class="code-fold">
 <summary>Code</summary>
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>

@@ -34,4 +34,4 @@ For development, use [pdm](https://github.com/pdm-project/pdm).
 
 ## Get started
 
-See the [example gallery](examples/index.qmd) and the [function reference](reference/index.qmd).
+See the [example gallery](https://assuncaolfi.github.io/savvi/examples/).

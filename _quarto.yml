@@ -1,11 +1,11 @@
 project:
   type: website
 
-execute:
-  cache: true
-
 bibliography: references.bib
 css: styles.css
+execute:
+  cache: true
+  freeze: auto
 link-citations: true
 # toc: true
 
@@ -38,14 +38,14 @@ quartodoc:
   sidebar: _sidebar.yml
 
   sections:
-    - title: "SAVI"
+    - title: "savvi"
       contents:
         - Inference
-    - subtitle: Linear Regression
+    - subtitle: linear_regression
       package: savvi.linear_regression
       contents:
         - LinearRegression
-    - subtitle: Multinomial
+    - subtitle: multinomial
       package: savvi.multinomial
       contents:
         - Multinomial

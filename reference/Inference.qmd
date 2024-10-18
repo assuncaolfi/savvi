@@ -10,6 +10,7 @@ Base class for inference.
 
 | Name | Description |
 | --- | --- |
+| [names](#savvi.Inference.names) | Names of the parameters. |
 | [p](#savvi.Inference.p) | Number of parameters. |
 
 ## Methods

@@ -6,3 +6,29 @@ multinomial.InhomogeneousPoissonProcess(self, alpha, rho, weights, k=100)
 
 Canary software release test from @lindon2022anytimevalid.
 See [example](../examples/InhomogeneousPoissonProcess.qmd).
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [update_odds](#savvi.multinomial.InhomogeneousPoissonProcess.update_odds) | Update the odds ratio using the Multinomial update method. |
+
+### update_odds { #savvi.multinomial.InhomogeneousPoissonProcess.update_odds }
+
+```python
+multinomial.InhomogeneousPoissonProcess.update_odds(x, **kwargs)
+```
+
+Update the odds ratio using the Multinomial update method.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type       | Description                        | Default    |
+|--------|------------|------------------------------------|------------|
+| x      | np.ndarray | New data to update the odds ratio. | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type   | Description             |
+|--------|--------|-------------------------|
+|        | float  | The updated odds ratio. |

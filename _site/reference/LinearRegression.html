@@ -180,7 +180,7 @@ div.csl-indent {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/LinearRegression.html">Linear Regression</a></li><li class="breadcrumb-item"><a href="../reference/LinearRegression.html">LinearRegression</a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../reference/Inference.html">SAVI</a></li><li class="breadcrumb-item"><a href="../reference/LinearRegression.html">Linear Regression</a></li><li class="breadcrumb-item"><a href="../reference/LinearRegression.html">LinearRegression</a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
     </div>
@@ -195,13 +195,13 @@ div.csl-indent {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/index.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Function reference</span></a>
+ <span class="menu-text">Reference</span></a>
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
- <span class="menu-text">Base</span></a>
+ <span class="menu-text">SAVI</span></a>
           <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
@@ -213,9 +213,7 @@ div.csl-indent {
  <span class="menu-text">Inference</span></a>
   </div>
 </li>
-      </ul>
-  </li>
-        <li class="sidebar-item sidebar-item-section">
+          <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
             <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
  <span class="menu-text">Linear Regression</span></a>
@@ -223,7 +221,7 @@ div.csl-indent {
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth2 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/LinearRegression.html" class="sidebar-item-text sidebar-link active">
@@ -232,15 +230,15 @@ div.csl-indent {
 </li>
       </ul>
   </li>
-        <li class="sidebar-item sidebar-item-section">
+          <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false">
  <span class="menu-text">Multinomial</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+          <a class="sidebar-item-toggle text-start collapsed" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="false" aria-label="Toggle section">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
-      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth2 ">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../reference/Multinomial.html" class="sidebar-item-text sidebar-link">
@@ -261,6 +259,8 @@ div.csl-indent {
 </li>
       </ul>
   </li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -277,7 +277,7 @@ div.csl-indent {
 <h1>LinearRegression</h1>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression(<span class="va">self</span>, alpha, p, phi<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Treatment effect tests from <span class="citation" data-cites="lindon2024anytimevalidlinearmodelsregression">Lindon et al. (<a href="#ref-lindon2024anytimevalidlinearmodelsregression" role="doc-biblioref">2024</a>)</span>.</p>
-<p>Parameters are calculated using the Recursive Least Squares algorithm.</p>
+<p>Coefficients are calculated using the Recursive Least Squares algorithm.</p>
 <p>See <a href="../examples/linear_regression.qmd">example</a>.</p>
 <section id="attributes" class="level2 doc-section doc-section-attributes">
 <h2 class="doc-section doc-section-attributes anchored" data-anchor-id="attributes">Attributes</h2>
@@ -318,39 +318,6 @@ div.csl-indent {
 </tbody>
 </table>
 </section>
-<section id="parameters" class="level2 doc-section doc-section-parameters">
-<h2 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>p</td>
-<td>int</td>
-<td>Number of covariates.</td>
-<td><em>required</em></td>
-</tr>
-<tr class="even">
-<td>alpha</td>
-<td>float</td>
-<td>Significance level for inference.</td>
-<td><em>required</em></td>
-</tr>
-<tr class="odd">
-<td>phi</td>
-<td>float</td>
-<td>Prior scale (default is 1).</td>
-<td><code>1</code></td>
-</tr>
-</tbody>
-</table>
-</section>
 <section id="methods" class="level2">
 <h2 class="anchored" data-anchor-id="methods">Methods</h2>
 <table class="table">
@@ -362,8 +329,16 @@ div.csl-indent {
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="#savvi.linear_regression.LinearRegression.infer">infer</a></td>
-<td>Perform statistical inference on the coefficients.</td>
+<td><a href="#savvi.linear_regression.LinearRegression.calculate_conf_int">calculate_conf_int</a></td>
+<td>Calculate confidence intervals for the coefficients.</td>
+</tr>
+<tr class="even">
+<td><a href="#savvi.linear_regression.LinearRegression.calculate_p_value">calculate_p_value</a></td>
+<td>Calculate p-values for the coefficients.</td>
+</tr>
+<tr class="odd">
+<td><a href="#savvi.linear_regression.LinearRegression.nu">nu</a></td>
+<td>Degrees of freedom.</td>
 </tr>
 <tr class="even">
 <td><a href="#savvi.linear_regression.LinearRegression.predict">predict</a></td>
@@ -389,19 +364,90 @@ div.csl-indent {
 <td><a href="#savvi.linear_regression.LinearRegression.update">update</a></td>
 <td>Update the model with new data.</td>
 </tr>
+<tr class="even">
+<td><a href="#savvi.linear_regression.LinearRegression.z2">z2</a></td>
+<td>Calculate the squared z-scores.</td>
+</tr>
 </tbody>
 </table>
-<section id="savvi.linear_regression.LinearRegression.infer" class="level3">
-<h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.infer">infer</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.infer()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Perform statistical inference on the coefficients.</p>
+<section id="savvi.linear_regression.LinearRegression.calculate_conf_int" class="level3">
+<h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.calculate_conf_int">calculate_conf_int</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.calculate_conf_int()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Calculate confidence intervals for the coefficients.</p>
+<section id="returns" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns">Returns</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>np.ndarray</td>
+<td>Confidence intervals for the coefficients.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="savvi.linear_regression.LinearRegression.calculate_p_value" class="level3">
+<h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.calculate_p_value">calculate_p_value</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.calculate_p_value()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Calculate p-values for the coefficients.</p>
+<section id="returns-1" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-1">Returns</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>np.ndarray</td>
+<td>P-values for the coefficients.</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="savvi.linear_regression.LinearRegression.nu" class="level3">
+<h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.nu">nu</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.nu()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Degrees of freedom.</p>
+<section id="returns-2" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-2">Returns</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>int</td>
+<td>Degrees of freedom.</td>
+</tr>
+</tbody>
+</table>
+</section>
 </section>
 <section id="savvi.linear_regression.LinearRegression.predict" class="level3">
 <h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.predict">predict</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.predict(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.predict(X)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Predict values for given covariates.</p>
-<section id="parameters-1" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-1">Parameters</h4>
+<section id="parameters" class="level4 doc-section doc-section-parameters">
+<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h4>
 <table class="table">
 <thead>
 <tr class="header">
@@ -421,8 +467,8 @@ div.csl-indent {
 </tbody>
 </table>
 </section>
-<section id="returns" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns">Returns</h4>
+<section id="returns-3" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-3">Returns</h4>
 <table class="table">
 <thead>
 <tr class="header">
@@ -443,10 +489,10 @@ div.csl-indent {
 </section>
 <section id="savvi.linear_regression.LinearRegression.sigma" class="level3">
 <h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.sigma">sigma</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.sigma()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.sigma()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Estimate the standard deviation of the error term.</p>
-<section id="returns-1" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-1">Returns</h4>
+<section id="returns-4" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-4">Returns</h4>
 <table class="table">
 <colgroup>
 <col style="width: 11%">
@@ -472,10 +518,10 @@ div.csl-indent {
 </section>
 <section id="savvi.linear_regression.LinearRegression.sse" class="level3">
 <h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.sse">sse</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.sse()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.sse()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Compute the Sum of Squared Errors (SSE).</p>
-<section id="returns-2" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-2">Returns</h4>
+<section id="returns-5" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-5">Returns</h4>
 <table class="table">
 <thead>
 <tr class="header">
@@ -496,10 +542,10 @@ div.csl-indent {
 </section>
 <section id="savvi.linear_regression.LinearRegression.standard_errors" class="level3">
 <h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.standard_errors">standard_errors</h3>
-<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.standard_errors()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.standard_errors()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Estimate the standard errors of the coefficients.</p>
-<section id="returns-3" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-3">Returns</h4>
+<section id="returns-6" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-6">Returns</h4>
 <table class="table">
 <colgroup>
 <col style="width: 10%">
@@ -525,10 +571,10 @@ div.csl-indent {
 </section>
 <section id="savvi.linear_regression.LinearRegression.t_stats" class="level3">
 <h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.t_stats">t_stats</h3>
-<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.t_stats()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.t_stats()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Calculate the t statistics of the coefficients.</p>
-<section id="returns-4" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-4">Returns</h4>
+<section id="returns-7" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-7">Returns</h4>
 <table class="table">
 <thead>
 <tr class="header">
@@ -549,10 +595,10 @@ div.csl-indent {
 </section>
 <section id="savvi.linear_regression.LinearRegression.update" class="level3">
 <h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.update">update</h3>
-<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.update(xy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.update(xy)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <p>Update the model with new data.</p>
-<section id="parameters-2" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-2">Parameters</h4>
+<section id="parameters-1" class="level4 doc-section doc-section-parameters">
+<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-1">Parameters</h4>
 <table class="table">
 <colgroup>
 <col style="width: 8%">
@@ -574,6 +620,30 @@ div.csl-indent {
 <td>Tuple[np.ndarray, float]</td>
 <td>Tuple of response and covariate values.</td>
 <td><em>required</em></td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="savvi.linear_regression.LinearRegression.z2" class="level3">
+<h3 class="anchored" data-anchor-id="savvi.linear_regression.LinearRegression.z2">z2</h3>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>linear_regression.LinearRegression.z2()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Calculate the squared z-scores.</p>
+<section id="returns-8" class="level4 doc-section doc-section-returns">
+<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-8">Returns</h4>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td></td>
+<td>np.ndarray</td>
+<td>Squared z-scores.</td>
 </tr>
 </tbody>
 </table>

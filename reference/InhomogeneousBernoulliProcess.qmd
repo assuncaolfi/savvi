@@ -11,5 +11,53 @@ multinomial.InhomogeneousBernoulliProcess(
 )
 ```
 
-Conversion rate optimization test from @lindon2022anytimevalid.
+Rate optimization test from @lindon2022anytimevalid.
 See [example](../examples/InhomogeneousBernoulliProcess.qmd).
+
+## Attributes
+
+| Name | Description |
+| --- | --- |
+| [delta](#savvi.multinomial.InhomogeneousBernoulliProcess.delta) | Calculate the delta values. |
+| [names](#savvi.multinomial.InhomogeneousBernoulliProcess.names) | Get the names of the parameters. |
+
+## Methods
+
+| Name | Description |
+| --- | --- |
+| [calculate_conf_int](#savvi.multinomial.InhomogeneousBernoulliProcess.calculate_conf_int) | Calculate confidence intervals for the parameters. |
+| [update_odds](#savvi.multinomial.InhomogeneousBernoulliProcess.update_odds) | Update the odds ratio. |
+
+### calculate_conf_int { #savvi.multinomial.InhomogeneousBernoulliProcess.calculate_conf_int }
+
+```python
+multinomial.InhomogeneousBernoulliProcess.calculate_conf_int(**kwargs)
+```
+
+Calculate confidence intervals for the parameters.
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type       | Description                          |
+|--------|------------|--------------------------------------|
+|        | np.ndarray | The calculated confidence intervals. |
+
+### update_odds { #savvi.multinomial.InhomogeneousBernoulliProcess.update_odds }
+
+```python
+multinomial.InhomogeneousBernoulliProcess.update_odds(x, **kwargs)
+```
+
+Update the odds ratio.
+
+#### Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type       | Description                        | Default    |
+|--------|------------|------------------------------------|------------|
+| x      | np.ndarray | New data to update the odds ratio. | _required_ |
+
+#### Returns {.doc-section .doc-section-returns}
+
+| Name   | Type   | Description             |
+|--------|--------|-------------------------|
+|        | float  | The updated odds ratio. |
