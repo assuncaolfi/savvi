@@ -1,0 +1,278 @@
+[
+  {
+    "objectID": "reference/examples/LinearRegression.html",
+    "href": "reference/examples/LinearRegression.html",
+    "title": "Linear Regression",
+    "section": "",
+    "text": "Application: testing of treatment effects while adjusting for pre-treatment covariables.\nBased on Lindon et al. (2024).\nConsider a new experimental unit \\(n\\). This unit has a pre-treatment measurement \\(x_n \\in \\mathbb{R}\\) and is assigned a treatment \\(z_n \\in \\{0, 1\\}\\). After the treatment, the unit produces an outcome:\n\\[\n\\begin{aligned}\ny_n = \\beta_0 + \\beta_1 x_n + \\beta_2 z_n + \\epsilon_n \\\\\n\\epsilon \\sim N(0, 1).\n\\end{aligned}\n\\]\n\nimport numpy as np\n\nsize = 5000\nnp.random.seed(1)\nx = np.random.normal(size=size)\nz = np.random.binomial(1, 1 / 2, size=size)\nepsilon = np.random.normal(size=size)\nbeta = [1.00, 0.32, 0.16]\ny = beta[0] + beta[1] * x + beta[2] * z + epsilon\nxs = np.column_stack((np.ones(size), x, z))\nxys = list(zip(xs, y))\n\nprint(xys[0])\n\n(array([1.        , 1.62434536, 1.        ]), 1.206083277199519)\n\n\nWe can test the hypothesis\n\\[\n\\begin{align}\nH_0: \\mathbf{\\beta_2} = 0 \\\\\nH_1: \\mathbf{\\beta_2} \\neq 0\n\\end{align}\n\\]\nas well as estimate confidence sequences for \\(\\beta_2\\) at a significance level \\(\\alpha\\) using a LinearRegression model:\n\nfrom savvi.linear_regression import LinearRegression\n\nalpha = 0.05\np = xs.shape[1]\nlr = LinearRegression(alpha, p)\n\nFor each new unit sample \\(n\\), we run the test. If \\(p_n(\\beta_2) &lt; \\alpha\\), we have the option to stop running:\n\nsequence = lr.batch(xys)\noptional_stop = next(s for s in sequence if s.p_value[2] &lt;= alpha)\nvars(optional_stop)\n\n/Users/assuncaolfi/Projects/savvi/src/savvi/linear_regression.py:190: RuntimeWarning: divide by zero encountered in divide\n  (1 - (r * self.alpha**2) ** (1 / (nu + 1)))\n\n\n{'lamb': 1,\n 'phi': 1,\n 'beta': array([1.0055657 , 0.33571434, 0.21281887]),\n 'covariance': array([[ 2.00002114e-03,  4.79141349e-06, -2.00052672e-03],\n        [ 4.79141349e-06,  1.08540923e-03, -1.19321030e-04],\n        [-2.00052672e-03, -1.19321030e-04,  4.24028865e-03]]),\n 'yty': 2165.7191404198866,\n 'Xty': array([1065.0017909 ,  366.4833688 ,  562.95992555]),\n 'n': 949,\n 'alpha': 0.05,\n 'conf_int': array([[0.91873431, 1.15391855],\n        [0.22339472, 0.39869202],\n        [0.00266113, 0.37009552]]),\n 'p_value': array([2.12264657e-95, 7.26608201e-23, 4.32465372e-02])}\n\n\n\n%config InlineBackend.figure_formats = [\"svg\"]\nfrom savvi.utils import plot\n\nfig, ax1, ax2 = plot(sequence, truth=beta, index=[2])\nax1.set_ylim(-0.25, 0.75)\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLindon, Michael, Dae Woong Ham, Martin Tingley, and Iavor Bojinov. 2024. “Anytime-Valid Linear Models and Regression Adjusted Causal Inference in Randomized Experiments.” https://arxiv.org/abs/2210.08589."
+  },
+  {
+    "objectID": "reference/index.html",
+    "href": "reference/index.html",
+    "title": "Reference",
+    "section": "",
+    "text": "Inference\nBase class for inference.\n\n\n\n\n\n\n\n\nLinearRegression\nTreatment effect tests from Lindon et al. (2024).\n\n\n\n\n\n\n\n\n\nMultinomial\nSample ratio mismatch test from Lindon and Malek (2022).\n\n\nInhomogeneousBernoulliProcess\nRate optimization test from Lindon and Malek (2022).\n\n\nInhomogeneousPoissonProcess\nCanary software release test from Lindon and Malek (2022).",
+    "crumbs": [
+      "Reference"
+    ]
+  },
+  {
+    "objectID": "reference/index.html#savi",
+    "href": "reference/index.html#savi",
+    "title": "Reference",
+    "section": "",
+    "text": "Inference\nBase class for inference.\n\n\n\n\n\n\n\n\nLinearRegression\nTreatment effect tests from Lindon et al. (2024).\n\n\n\n\n\n\n\n\n\nMultinomial\nSample ratio mismatch test from Lindon and Malek (2022).\n\n\nInhomogeneousBernoulliProcess\nRate optimization test from Lindon and Malek (2022).\n\n\nInhomogeneousPoissonProcess\nCanary software release test from Lindon and Malek (2022).",
+    "crumbs": [
+      "Reference"
+    ]
+  },
+  {
+    "objectID": "reference/InhomogeneousBernoulliProcess.html",
+    "href": "reference/InhomogeneousBernoulliProcess.html",
+    "title": "InhomogeneousBernoulliProcess",
+    "section": "",
+    "text": "multinomial.InhomogeneousBernoulliProcess(\n    self\n    alpha\n    rho\n    hypothesis\n    weights\n    k=100\n)\nRate optimization test from Lindon and Malek (2022). See example.\n\n\n\n\n\nName\nDescription\n\n\n\n\ndelta\nCalculate the delta values.\n\n\nnames\nGet the names of the parameters.\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the parameters.\n\n\nupdate_odds\nUpdate the odds ratio.\n\n\n\n\n\nmultinomial.InhomogeneousBernoulliProcess.calculate_conf_int(**kwargs)\nCalculate confidence intervals for the parameters.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nThe calculated confidence intervals.\n\n\n\n\n\n\n\nmultinomial.InhomogeneousBernoulliProcess.update_odds(x, **kwargs)\nUpdate the odds ratio.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Multinomial",
+      "InhomogeneousBernoulliProcess"
+    ]
+  },
+  {
+    "objectID": "reference/InhomogeneousBernoulliProcess.html#attributes",
+    "href": "reference/InhomogeneousBernoulliProcess.html#attributes",
+    "title": "InhomogeneousBernoulliProcess",
+    "section": "",
+    "text": "Name\nDescription\n\n\n\n\ndelta\nCalculate the delta values.\n\n\nnames\nGet the names of the parameters.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Multinomial",
+      "InhomogeneousBernoulliProcess"
+    ]
+  },
+  {
+    "objectID": "reference/InhomogeneousBernoulliProcess.html#methods",
+    "href": "reference/InhomogeneousBernoulliProcess.html#methods",
+    "title": "InhomogeneousBernoulliProcess",
+    "section": "",
+    "text": "Name\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the parameters.\n\n\nupdate_odds\nUpdate the odds ratio.\n\n\n\n\n\nmultinomial.InhomogeneousBernoulliProcess.calculate_conf_int(**kwargs)\nCalculate confidence intervals for the parameters.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nThe calculated confidence intervals.\n\n\n\n\n\n\n\nmultinomial.InhomogeneousBernoulliProcess.update_odds(x, **kwargs)\nUpdate the odds ratio.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Multinomial",
+      "InhomogeneousBernoulliProcess"
+    ]
+  },
+  {
+    "objectID": "reference/Multinomial.html",
+    "href": "reference/Multinomial.html",
+    "title": "Multinomial",
+    "section": "",
+    "text": "multinomial.Multinomial(self, alpha, theta_0, k=100)\nSample ratio mismatch test from Lindon and Malek (2022). See example.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\ntheta\ncp.Variable\nMultinomial parameter.\n\n\ntheta_0\nnp.ndarray\nNull Multinomial parameter.\n\n\nalpha_0\nnp.ndarray\nPrior Dirichlet parameters.\n\n\nalpha\nnp.ndarray\nPosterior Dirichlet parameters.\n\n\ncounts\nnp.ndarray\nSuccess counts.\n\n\nd\nfloat\nSize of theta.\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the parameters.\n\n\ncalculate_p_value\nCalculate the p-value.\n\n\nupdate\nUpdate the model with new data.\n\n\nupdate_odds\nUpdate the odds ratio.\n\n\n\n\n\nmultinomial.Multinomial.calculate_conf_int(**kwargs)\nCalculate confidence intervals for the parameters.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nThe calculated confidence intervals.\n\n\n\n\n\n\n\nmultinomial.Multinomial.calculate_p_value(**kwargs)\nCalculate the p-value.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe calculated p-value.\n\n\n\n\n\n\n\nmultinomial.Multinomial.update(x)\nUpdate the model with new data.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the model.\nrequired\n\n\n\n\n\n\n\nmultinomial.Multinomial.update_odds(x)\nUpdate the odds ratio.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Multinomial",
+      "Multinomial"
+    ]
+  },
+  {
+    "objectID": "reference/Multinomial.html#attributes",
+    "href": "reference/Multinomial.html#attributes",
+    "title": "Multinomial",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\ntheta\ncp.Variable\nMultinomial parameter.\n\n\ntheta_0\nnp.ndarray\nNull Multinomial parameter.\n\n\nalpha_0\nnp.ndarray\nPrior Dirichlet parameters.\n\n\nalpha\nnp.ndarray\nPosterior Dirichlet parameters.\n\n\ncounts\nnp.ndarray\nSuccess counts.\n\n\nd\nfloat\nSize of theta.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Multinomial",
+      "Multinomial"
+    ]
+  },
+  {
+    "objectID": "reference/Multinomial.html#methods",
+    "href": "reference/Multinomial.html#methods",
+    "title": "Multinomial",
+    "section": "",
+    "text": "Name\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the parameters.\n\n\ncalculate_p_value\nCalculate the p-value.\n\n\nupdate\nUpdate the model with new data.\n\n\nupdate_odds\nUpdate the odds ratio.\n\n\n\n\n\nmultinomial.Multinomial.calculate_conf_int(**kwargs)\nCalculate confidence intervals for the parameters.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nThe calculated confidence intervals.\n\n\n\n\n\n\n\nmultinomial.Multinomial.calculate_p_value(**kwargs)\nCalculate the p-value.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe calculated p-value.\n\n\n\n\n\n\n\nmultinomial.Multinomial.update(x)\nUpdate the model with new data.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the model.\nrequired\n\n\n\n\n\n\n\nmultinomial.Multinomial.update_odds(x)\nUpdate the odds ratio.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Multinomial",
+      "Multinomial"
+    ]
+  },
+  {
+    "objectID": "examples/index.html",
+    "href": "examples/index.html",
+    "title": "Examples",
+    "section": "",
+    "text": "Inhomogeneous Bernoulli Process\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nInhomogeneous Poisson Process\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nLinear Regression\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nMultinomial\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nNo matching items"
+  },
+  {
+    "objectID": "examples/LinearRegression.html",
+    "href": "examples/LinearRegression.html",
+    "title": "Linear Regression",
+    "section": "",
+    "text": "Application: testing of treatment effects while adjusting for pre-treatment covariables.\nConsider a new experimental unit \\(n\\). This unit has a pre-treatment measurement \\(x_n \\in \\mathbb{R}\\) and is assigned a treatment \\(z_n \\in \\{0, 1\\}\\). After the treatment, the unit produces an outcome:\n\\[\n\\begin{aligned}\ny_n = \\beta_0 + \\beta_1 x_n + \\beta_2 z_n + \\epsilon_n \\\\\n\\epsilon \\sim N(0, 1).\n\\end{aligned}\n\\]\n\nimport numpy as np\n\nsize = 5000\nnp.random.seed(1)\nx = np.random.normal(size=size)\nz = np.random.binomial(1, 1 / 2, size=size)\nepsilon = np.random.normal(size=size)\nbeta = [1.00, 0.32, 0.16]\ny = beta[0] + beta[1] * x + beta[2] * z + epsilon\nxs = np.column_stack((np.ones(size), x, z))\nxys = list(zip(xs, y))\n\nprint(xys[0])\n\n(array([1.        , 1.62434536, 1.        ]), 1.206083277199519)\n\n\nWe can test the hypothesis\n\\[\n\\begin{align}\nH_0: \\mathbf{\\beta_2} = 0 \\\\\nH_1: \\mathbf{\\beta_2} \\neq 0\n\\end{align}\n\\]\nas well as estimate confidence sequences for \\(\\beta_2\\) at a significance level \\(\\alpha\\) using a LinearRegression model:\n\nfrom savvi.linear_regression import LinearRegression\n\nalpha = 0.05\np = xs.shape[1]\nlr = LinearRegression(alpha, p)\n\nFor each new unit sample \\(n\\), we run the test. If \\(p_n &lt; \\alpha\\), we have the option to stop running:\n\nsequence = lr.batch(xys)\noptional_stop = next(s for s in sequence if s.p_value[2] &lt;= alpha)\nvars(optional_stop)\n\n/Users/assuncaolfi/Projects/savvi/src/savvi/linear_regression.py:97: RuntimeWarning: divide by zero encountered in divide\n  (1 - (r * self.alpha**2) ** (1 / (self.nu() + 1)))\n\n\n{'lamb': 1,\n 'phi': 1,\n 'beta': array([1.0055657 , 0.33571434, 0.21281887]),\n 'covariance': array([[ 2.00002114e-03,  4.79141349e-06, -2.00052672e-03],\n        [ 4.79141349e-06,  1.08540923e-03, -1.19321030e-04],\n        [-2.00052672e-03, -1.19321030e-04,  4.24028865e-03]]),\n 'yty': 2165.7191404198866,\n 'Xty': array([1065.0017909 ,  366.4833688 ,  562.95992555]),\n 'n': 949,\n 'alpha': 0.05,\n 'conf_int': array([[0.91873431, 1.15391855],\n        [0.22339472, 0.39869202],\n        [0.00266113, 0.37009552]]),\n 'p_value': array([2.12264657e-95, 7.26608201e-23, 4.32465372e-02])}\n\n\n\n%config InlineBackend.figure_formats = [\"svg\"]\nfrom savvi.utils import plot\n\nfig, ax1, ax2 = plot(sequence, truth=beta, index=[2])\nax1.set_ylim(-0.25, 0.75)"
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "savvi",
+    "section": "",
+    "text": "savvi is a package for Safe Anytime Valid Inference. Also, it’s a savvy pun.\nFrom Ramdas et al. (2023):"
+  },
+  {
+    "objectID": "index.html#install",
+    "href": "index.html#install",
+    "title": "savvi",
+    "section": "Install",
+    "text": "Install\nStable version:\npip install savvi\nDevelopment version:\npip install git+https://github.com/assuncaolfi/savvi\nFor development, use pdm."
+  },
+  {
+    "objectID": "index.html#get-started",
+    "href": "index.html#get-started",
+    "title": "savvi",
+    "section": "Get started",
+    "text": "Get started\nSee the example gallery and the function reference."
+  },
+  {
+    "objectID": "CHANGELOG.html",
+    "href": "CHANGELOG.html",
+    "title": "Changelog",
+    "section": "",
+    "text": "All notable changes to this project will be documented in this file.\nThe format is based on Keep a Changelog, and this project adheres to Semantic Versioning.\n\n\n\n\n\nInference for linear regression coefficients\nExample notebook for LinearRegression model\nWebsite documentation using quartodoc\nInference.batch update method\nUtilities for plotting\nPublished to pypi\n\n\n\n\n\nSome refactoring in the base Inference object"
+  },
+  {
+    "objectID": "CHANGELOG.html#section",
+    "href": "CHANGELOG.html#section",
+    "title": "Changelog",
+    "section": "",
+    "text": "Inference for linear regression coefficients\nExample notebook for LinearRegression model\nWebsite documentation using quartodoc\nInference.batch update method\nUtilities for plotting\nPublished to pypi\n\n\n\n\n\nSome refactoring in the base Inference object"
+  },
+  {
+    "objectID": "examples/Multinomial.html",
+    "href": "examples/Multinomial.html",
+    "title": "Multinomial",
+    "section": "",
+    "text": "Application: sample ratio mismatch.\nBased on Lindon and Malek (2022).\nConsider a new experimental unit \\(n\\) is assigned to one of \\(i \\in \\{1, 2, 3\\}\\) groups with probabilities \\(\\mathbf{\\theta} = [0.1, 0.3, 0.6]\\). Therefore, groups are \\(\\mathrm{Multinomial}(1, \\mathbf{\\theta})\\) distributed.\n\nimport numpy as np\n\ntheta = np.array([0.1, 0.3, 0.6])\nsize = 1000\nnp.random.seed(1)\nxs = np.random.multinomial(1, theta, size=size)\nprint(xs)\n\n[[0 1 0]\n [0 0 1]\n [0 0 1]\n ...\n [0 1 0]\n [1 0 0]\n [0 0 1]]\n\n\nWe can test the hypothesis\n\\[\n\\begin{align}\nH_0: \\mathbf{\\theta} = \\mathbf{\\theta_0} \\\\\nH_1: \\mathbf{\\theta} \\neq \\mathbf{\\theta_0}\n\\end{align}\n\\]\nwith \\(\\mathbf{\\theta_0} = [0.1, 0.4, 0.5]\\), as well as estimate confidence sequences for \\(\\theta\\) at a significance level \\(\\alpha\\), using the default Multinomial test:\n\nfrom savvi.multinomial import Multinomial\n\nalpha = 0.05\ntheta_0 = np.array([0.1, 0.4, 0.5])\nmultinomial = Multinomial(0.05, theta_0)\n\nFor each new unit sample \\(n\\), we run the test. If \\(p_n &lt; \\alpha\\), we have the option to stop running:\n\nimport cvxpy as cp\nsequence = multinomial.batch(xs, solver=cp.CLARABEL)\noptional_stop = next(s for s in sequence if s.p_value &lt;= alpha)\nvars(optional_stop)\n\n{'n': 402,\n 'alpha': 0.05,\n 'conf_int': array([[0.05668477, 0.14939676],\n        [0.26089872, 0.40283026],\n        [0.49712093, 0.65176173]]),\n 'p_value': array([0.04845591]),\n 'theta_0': array([0.1, 0.4, 0.5]),\n 'alpha_0': array([10., 40., 50.]),\n 'counts': array([ 40, 129, 233]),\n 'odds': 20.637317060617267}\n\n\n\n\nCode\n%config InlineBackend.figure_formats = [\"svg\"]\n\nfrom savvi.utils import plot\n\nplot(sequence, theta);\n\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLindon, Michael, and Alan Malek. 2022. “Anytime-Valid Inference for Multinomial Count Data.” In Advances in Neural Information Processing Systems, edited by Alice H. Oh, Alekh Agarwal, Danielle Belgrave, and Kyunghyun Cho. https://openreview.net/forum?id=a4zg0jiuVi."
+  },
+  {
+    "objectID": "examples/InhomogeneousBernoulliProcess.html",
+    "href": "examples/InhomogeneousBernoulliProcess.html",
+    "title": "Inhomogeneous Bernoulli Process",
+    "section": "",
+    "text": "Application: conversion rate optimization when all groups share a common multiplicative time-varying effect.\nBased on Lindon and Malek (2022).\nSuppose a new experimental unit \\(n\\) is randomly assigned to one of \\(i \\in \\{1, 2, 3\\}\\) experiment treatment groups at time \\(t\\), with assignment probabilities \\(\\mathbf{\\rho} = [0.1, 0.3, 0.6]\\), and a Bernoulli outcome is observed with probability \\(p_i(t) = \\exp(\\mu(t) + \\delta_{i})\\), \\(\\mathbf{\\delta} = [\\log 0.2, \\log 0.3, \\log 0.4]\\). The conditional probability that the next Bernoulli success comes from group \\(i\\) is\n\\[\n\\theta_i = \\frac{\\rho_i \\exp(\\delta_i)}{\\sum_{j=1}^d \\rho_j \\exp(\\delta_j)}.\n\\]\nTherefore, the next Bernoulli success comes from a random group, \\(\\mathrm{Multinomial}(1, \\mathbf{\\theta})\\) distributed, with \\(\\mathbf{\\theta} \\approx [0.05, 0.25, 0.68]\\).\n\nimport numpy as np\n\nrho = np.array([0.1, 0.3, 0.6])\ndelta = np.log([0.2, 0.3, 0.4])\ntheta = rho * np.exp(delta) / np.sum(rho * np.exp(delta))\nsize = 5250\nnp.random.seed(1)\nxs = np.random.multinomial(1, theta, size=size)\nprint(xs)\n\n[[0 0 1]\n [0 0 1]\n [0 0 1]\n ...\n [0 1 0]\n [0 1 0]\n [1 0 0]]\n\n\nWe can test the hypothesis\n\\[\n\\begin{align}\nH_0: \\delta_0 \\geq \\delta_1, \\delta_0 \\geq \\delta_2 \\\\\nH_1: \\delta_0 \\lt \\delta_1, \\delta_0 \\lt \\delta_2\n\\end{align}\n\\]\nusing a Multinomial test with \\(\\mathbf{\\theta}_0 = \\mathbf{\\rho}\\) and a list of inequalities for \\(\\mathbf{\\delta}\\). To estimate confidence intervals for the contrasts, we may set a matrix of weights, with rows \\([-1, 0, 1]\\) for \\(\\delta_2 - \\delta_0\\) and \\([0, -1, 1]\\) for \\(\\delta_2 - \\delta_1\\):\n\nfrom savvi.multinomial import InhomogeneousBernoulliProcess\n\nalpha = 0.05\nhypothesis = lambda delta: [delta[0] &gt;= delta[1], delta[0] &gt;= delta[2]]\nweights = np.array([[-1, 0, 1], [0, -1, 1]])\nibp = InhomogeneousBernoulliProcess(alpha, rho, hypothesis, weights)\n\nFor each new unit sample \\(n\\), we run the test. If \\(p_n &lt; u\\), we have the option to stop running:\n\nimport cvxpy as cp\n\nsolver = cp.CLARABEL\nsequence = ibp.batch(xs, solver=solver)\noptional_stop = next(s for s in sequence if s.p_value &lt;= alpha)\nvars(optional_stop)\n\n{'n': 302,\n 'alpha': 0.05,\n 'conf_int': array([[ 9.38644932e-04,  1.77164771e+00],\n        [-1.57653154e-01,  6.47239250e-01]]),\n 'p_value': array([0.04923547]),\n 'theta_0': array([0.1, 0.3, 0.6]),\n 'alpha_0': array([10., 30., 60.]),\n 'counts': array([ 15,  82, 205]),\n 'odds': array(20.31056249),\n 'hypothesis': &lt;function __main__.&lt;lambda&gt;(delta)&gt;,\n 'weights': array([[-1,  0,  1],\n        [ 0, -1,  1]])}\n\n\n\n%config InlineBackend.figure_formats = [\"svg\"]\n\nimport matplotlib.pyplot as plt\nfrom savvi.utils import plot\n\ncontrasts = ibp.weights @ delta\n_, ax1, _ = plot(sequence, contrasts)\nax1.set_ylim(-1, 2)\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLindon, Michael, and Alan Malek. 2022. “Anytime-Valid Inference for Multinomial Count Data.” In Advances in Neural Information Processing Systems, edited by Alice H. Oh, Alekh Agarwal, Danielle Belgrave, and Kyunghyun Cho. https://openreview.net/forum?id=a4zg0jiuVi."
+  },
+  {
+    "objectID": "examples/InhomogeneousPoissonProcess.html",
+    "href": "examples/InhomogeneousPoissonProcess.html",
+    "title": "Inhomogeneous Poisson Process",
+    "section": "",
+    "text": "Application: software canary testing when all processes share a common multiplicative time-varying effect.\nBased on Lindon and Malek (2022).\nConsider points are observed from one of \\(i \\in \\{1, 2\\}\\) Poisson point processes with intensity functions \\(\\lambda_i(t) = \\rho_i \\exp(\\delta_i) \\lambda(t)\\), with \\(\\rho = [0.8, 0.2]\\) and \\(\\delta = [1.5, 2]\\). The probability that the next point comes from process \\(i\\) is\n\\[\n\\theta_i = \\frac{\\rho_i \\exp(\\delta_i)}{\\sum_{j=1}^d \\rho_j \\exp(\\delta_j)}.\n\\]\nTherefore, the next point comes from a random process, distributed as \\(\\mathrm{Multinomial}(1, \\mathbf{\\theta})\\), with \\(\\mathbf{\\theta} \\approx [0.7, 0.3]\\).\n\nimport numpy as np\n\nrho = np.array([0.8, 0.2])\ndelta = np.array([1.5, 2])\ntheta = rho * np.exp(delta) / np.sum(rho * np.exp(delta))\nsize = 1500\nnp.random.seed(1)\nxs = np.random.multinomial(1, theta, size=size)\nprint(xs)\n\n[[1 0]\n [0 1]\n [1 0]\n ...\n [1 0]\n [1 0]\n [0 1]]\n\n\nWe can test the hypothesis\n\\[\n\\begin{align}\nH_0: \\delta_1 - \\delta_0 = 0 \\quad (\\mathbf{\\theta} = \\mathbf{\\rho}) \\\\\nH_1: \\delta_1 - \\delta_0 \\neq 0  \\quad (\\mathbf{\\theta} \\neq \\mathbf{\\rho})\n\\end{align}\n\\]\nusing a Multinomial test with \\(\\alpha = 0.05\\), \\(\\mathbf{\\theta}_0 = \\mathbf{\\rho}\\) and contrast weights \\([-1, 1]\\) to estimate a confidence sequence for \\(\\delta_1 - \\delta_0\\):\n\nfrom savvi.multinomial import InhomogeneousPoissonProcess\n\nalpha = 0.05\nweights = np.array([[-1, 1]])\nipp = InhomogeneousPoissonProcess(alpha, rho, weights)\n\nFor each new unit sample \\(n\\), we run the test. If \\(p_n &lt; \\alpha\\), we have the option to stop running:\n\nimport cvxpy as cp\n\nsolver = cp.CLARABEL\nsequence = ipp.batch(xs, solver=solver)\noptional_stop = next(s for s in sequence if s.p_value &lt;= alpha)\nvars(optional_stop)\n\n{'n': 210,\n 'alpha': 0.05,\n 'conf_int': array([[0.00464625, 0.75493987]]),\n 'p_value': array([0.04557963]),\n 'theta_0': array([0.8, 0.2]),\n 'alpha_0': array([80., 20.]),\n 'counts': array([148,  62]),\n 'odds': 21.93962437612422,\n 'hypothesis': &lt;function savvi.multinomial.InhomogeneousPoissonProcess.__init__.&lt;locals&gt;.&lt;lambda&gt;(_)&gt;,\n 'weights': array([[-1,  1]])}\n\n\n\n%config InlineBackend.figure_formats = [\"svg\"]\n\nimport matplotlib.pyplot as plt\nfrom savvi.utils import plot\n\ncontrasts = ipp.weights @ delta\n_, ax1, _ = plot(sequence, contrasts)\nax1.set_ylim(-1, 2)\nplt.show()\n\n\n\n\n\n\n\n\n\n\n\n\nReferences\n\nLindon, Michael, and Alan Malek. 2022. “Anytime-Valid Inference for Multinomial Count Data.” In Advances in Neural Information Processing Systems, edited by Alice H. Oh, Alekh Agarwal, Danielle Belgrave, and Kyunghyun Cho. https://openreview.net/forum?id=a4zg0jiuVi."
+  },
+  {
+    "objectID": "reference/LinearRegression.html",
+    "href": "reference/LinearRegression.html",
+    "title": "LinearRegression",
+    "section": "",
+    "text": "linear_regression.LinearRegression(self, alpha, p, phi=1)\nTreatment effect tests from Lindon et al. (2024).\nCoefficients are calculated using the Recursive Least Squares algorithm.\nSee example.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\nbeta\nnp.ndarray\nEstimate of regression coefficients.\n\n\ncovariance\nnp.ndarray\nEstimate of covariance matrix.\n\n\nyty\nfloat\nSum of squared response values.\n\n\nXty\nnp.ndarray\nSum of products of covariates and response.\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the coefficients.\n\n\ncalculate_p_value\nCalculate p-values for the coefficients.\n\n\nnu\nDegrees of freedom.\n\n\npredict\nPredict values for given covariates.\n\n\nsigma\nEstimate the standard deviation of the error term.\n\n\nsse\nCompute the Sum of Squared Errors (SSE).\n\n\nstandard_errors\nEstimate the standard errors of the coefficients.\n\n\nt_stats\nCalculate the t statistics of the coefficients.\n\n\nupdate\nUpdate the model with new data.\n\n\nz2\nCalculate the squared z-scores.\n\n\n\n\n\nlinear_regression.LinearRegression.calculate_conf_int()\nCalculate confidence intervals for the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nConfidence intervals for the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.calculate_p_value()\nCalculate p-values for the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nP-values for the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.nu()\nDegrees of freedom.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nint\nDegrees of freedom.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.predict(X)\nPredict values for given covariates.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nX\nnp.ndarray\nMatrix of covariates.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nPredicted values.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.sigma()\nEstimate the standard deviation of the error term.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nEstimate of the standard deviation of the error term.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.sse()\nCompute the Sum of Squared Errors (SSE).\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nSSE value.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.standard_errors()\nEstimate the standard errors of the coefficients.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nEstimate of the standard errors of the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.t_stats()\nCalculate the t statistics of the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nT statistics of the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.update(xy)\nUpdate the model with new data.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nxy\nTuple[np.ndarray, float]\nTuple of response and covariate values.\nrequired\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.z2()\nCalculate the squared z-scores.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nSquared z-scores.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Linear Regression",
+      "LinearRegression"
+    ]
+  },
+  {
+    "objectID": "reference/LinearRegression.html#attributes",
+    "href": "reference/LinearRegression.html#attributes",
+    "title": "LinearRegression",
+    "section": "",
+    "text": "Name\nType\nDescription\n\n\n\n\nbeta\nnp.ndarray\nEstimate of regression coefficients.\n\n\ncovariance\nnp.ndarray\nEstimate of covariance matrix.\n\n\nyty\nfloat\nSum of squared response values.\n\n\nXty\nnp.ndarray\nSum of products of covariates and response.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Linear Regression",
+      "LinearRegression"
+    ]
+  },
+  {
+    "objectID": "reference/LinearRegression.html#methods",
+    "href": "reference/LinearRegression.html#methods",
+    "title": "LinearRegression",
+    "section": "",
+    "text": "Name\nDescription\n\n\n\n\ncalculate_conf_int\nCalculate confidence intervals for the coefficients.\n\n\ncalculate_p_value\nCalculate p-values for the coefficients.\n\n\nnu\nDegrees of freedom.\n\n\npredict\nPredict values for given covariates.\n\n\nsigma\nEstimate the standard deviation of the error term.\n\n\nsse\nCompute the Sum of Squared Errors (SSE).\n\n\nstandard_errors\nEstimate the standard errors of the coefficients.\n\n\nt_stats\nCalculate the t statistics of the coefficients.\n\n\nupdate\nUpdate the model with new data.\n\n\nz2\nCalculate the squared z-scores.\n\n\n\n\n\nlinear_regression.LinearRegression.calculate_conf_int()\nCalculate confidence intervals for the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nConfidence intervals for the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.calculate_p_value()\nCalculate p-values for the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nP-values for the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.nu()\nDegrees of freedom.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nint\nDegrees of freedom.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.predict(X)\nPredict values for given covariates.\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nX\nnp.ndarray\nMatrix of covariates.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nPredicted values.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.sigma()\nEstimate the standard deviation of the error term.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nEstimate of the standard deviation of the error term.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.sse()\nCompute the Sum of Squared Errors (SSE).\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nSSE value.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.standard_errors()\nEstimate the standard errors of the coefficients.\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nEstimate of the standard errors of the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.t_stats()\nCalculate the t statistics of the coefficients.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nT statistics of the coefficients.\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.update(xy)\nUpdate the model with new data.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nxy\nTuple[np.ndarray, float]\nTuple of response and covariate values.\nrequired\n\n\n\n\n\n\n\nlinear_regression.LinearRegression.z2()\nCalculate the squared z-scores.\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nnp.ndarray\nSquared z-scores.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Linear Regression",
+      "LinearRegression"
+    ]
+  },
+  {
+    "objectID": "reference/Inference.html",
+    "href": "reference/Inference.html",
+    "title": "Inference",
+    "section": "",
+    "text": "Inference(self, alpha, p, tests=1)\nBase class for inference.\n\n\n\n\n\nName\nDescription\n\n\n\n\nnames\nNames of the parameters.\n\n\np\nNumber of parameters.\n\n\n\n\n\n\n\n\n\nName\nDescription\n\n\n\n\nbatch\nFor each sample unit in the batch: update, infer and keep the inference object.\n\n\ncalculate_conf_int\nCalculate confidence interval.\n\n\ncalculate_p_value\nCalculate p-value.\n\n\ninfer\nCalculate confidence interval and p-value, then:\n\n\nupdate\nUpdate statistics.\n\n\n\n\n\nInference.batch(xs, **kwargs)\nFor each sample unit in the batch: update, infer and keep the inference object.\n\n\n\nInference.calculate_conf_int(**kwargs)\nCalculate confidence interval.\n\n\n\nInference.calculate_p_value(**kwargs)\nCalculate p-value.\n\n\n\nInference.infer(**kwargs)\nCalculate confidence interval and p-value, then:\n\nKeep the maximum lower bound and minimum upper bound for the confidence interval;\nKeep the minimum p-value.\n\n\n\n\nInference.update(x, **kwargs)\nUpdate statistics.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Inference"
+    ]
+  },
+  {
+    "objectID": "reference/Inference.html#attributes",
+    "href": "reference/Inference.html#attributes",
+    "title": "Inference",
+    "section": "",
+    "text": "Name\nDescription\n\n\n\n\nnames\nNames of the parameters.\n\n\np\nNumber of parameters.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Inference"
+    ]
+  },
+  {
+    "objectID": "reference/Inference.html#methods",
+    "href": "reference/Inference.html#methods",
+    "title": "Inference",
+    "section": "",
+    "text": "Name\nDescription\n\n\n\n\nbatch\nFor each sample unit in the batch: update, infer and keep the inference object.\n\n\ncalculate_conf_int\nCalculate confidence interval.\n\n\ncalculate_p_value\nCalculate p-value.\n\n\ninfer\nCalculate confidence interval and p-value, then:\n\n\nupdate\nUpdate statistics.\n\n\n\n\n\nInference.batch(xs, **kwargs)\nFor each sample unit in the batch: update, infer and keep the inference object.\n\n\n\nInference.calculate_conf_int(**kwargs)\nCalculate confidence interval.\n\n\n\nInference.calculate_p_value(**kwargs)\nCalculate p-value.\n\n\n\nInference.infer(**kwargs)\nCalculate confidence interval and p-value, then:\n\nKeep the maximum lower bound and minimum upper bound for the confidence interval;\nKeep the minimum p-value.\n\n\n\n\nInference.update(x, **kwargs)\nUpdate statistics.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Inference"
+    ]
+  },
+  {
+    "objectID": "reference/InhomogeneousPoissonProcess.html",
+    "href": "reference/InhomogeneousPoissonProcess.html",
+    "title": "InhomogeneousPoissonProcess",
+    "section": "",
+    "text": "multinomial.InhomogeneousPoissonProcess(self, alpha, rho, weights, k=100)\nCanary software release test from Lindon and Malek (2022). See example.\n\n\n\n\n\nName\nDescription\n\n\n\n\nupdate_odds\nUpdate the odds ratio using the Multinomial update method.\n\n\n\n\n\nmultinomial.InhomogeneousPoissonProcess.update_odds(x, **kwargs)\nUpdate the odds ratio using the Multinomial update method.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Multinomial",
+      "InhomogeneousPoissonProcess"
+    ]
+  },
+  {
+    "objectID": "reference/InhomogeneousPoissonProcess.html#methods",
+    "href": "reference/InhomogeneousPoissonProcess.html#methods",
+    "title": "InhomogeneousPoissonProcess",
+    "section": "",
+    "text": "Name\nDescription\n\n\n\n\nupdate_odds\nUpdate the odds ratio using the Multinomial update method.\n\n\n\n\n\nmultinomial.InhomogeneousPoissonProcess.update_odds(x, **kwargs)\nUpdate the odds ratio using the Multinomial update method.\n\n\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\nDefault\n\n\n\n\nx\nnp.ndarray\nNew data to update the odds ratio.\nrequired\n\n\n\n\n\n\n\n\n\nName\nType\nDescription\n\n\n\n\n\nfloat\nThe updated odds ratio.",
+    "crumbs": [
+      "Reference",
+      "SAVI",
+      "Multinomial",
+      "InhomogeneousPoissonProcess"
+    ]
+  }
+]

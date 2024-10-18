@@ -1,0 +1,11 @@
+[
+  {
+    "listing": "/examples/index.html",
+    "items": [
+      "/examples/InhomogeneousBernoulliProcess.html",
+      "/examples/InhomogeneousPoissonProcess.html",
+      "/examples/LinearRegression.html",
+      "/examples/Multinomial.html"
+    ]
+  }
+]
