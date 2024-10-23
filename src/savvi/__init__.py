@@ -34,6 +34,14 @@ class Inference:
 
     @property
     @abstractmethod
+    def estimate(self) -> np.ndarray:
+        """
+        Estimate of the parameters.
+        """
+        pass
+
+    @property
+    @abstractmethod
     def names(self) -> List[str]:
         """
         Names of the parameters.
@@ -84,3 +92,33 @@ class Inference:
             self.infer(**kwargs)
             sequence.append(deepcopy(self))
         return sequence
+
+    def __str__(self) -> str:
+        """
+        Return a string representation of the object as a markdown table.
+        """
+
+        table = f"Sample size: {self.n}\n"
+        table += "| Parameter | Estimate | Confidence interval |"
+        if isinstance(self.p_value, np.ndarray):
+            table += " P-value |"
+        table += "\n"
+        table += "|-----------|----------|---------------------|"
+        if isinstance(self.p_value, np.ndarray):
+            table += "---------|"
+        table += "\n"
+
+        for i in range(self.p):
+            table += (
+                f"| {self.names[i]} | "
+                f"{self.estimate[i]:.4f}   | "
+                f"[{self.conf_int[i, 0]:.4f}, {self.conf_int[i, 1]:.4f}]    |"
+            )
+            if isinstance(self.p_value, np.ndarray):
+                table += f" {self.p_value[i]:.4f}  |"
+            table += "\n"
+
+        if not isinstance(self.p_value, np.ndarray):
+            table += f"\nP-value: {self.p_value:.4f}"
+
+        return table

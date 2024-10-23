@@ -54,6 +54,10 @@ class LinearRegression(Inference):
     def names(self) -> List[str]:
         return [f"$\\beta_{i}$" for i in range(self.p)]
 
+    @property
+    def estimate(self) -> np.ndarray:
+        return self.beta
+
     def update(self, xy: Tuple[np.ndarray, float]) -> None:
         """
         Update the model with new data.

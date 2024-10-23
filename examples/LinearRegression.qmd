@@ -16,12 +16,12 @@ jupyter:
 
 _Application: testing of treatment effects while adjusting for pre-treatment covariables._ 
 
-Consider a new experimental unit $n$. This unit has a pre-treatment measurement $x_n \in \mathbb{R}$ and is assigned a treatment $z_n \in \{0, 1\}$. After the treatment, the unit produces an outcome:
+Consider the arrival of a new experimental unit $n$. This unit has a pre-treatment measurement $x_n \in \mathbb{R}$ and is assigned a treatment $z_n \in \{0, 1\}$. After the treatment, the unit produces an outcome
 
 $$
 \begin{aligned}
 y_n = \beta_0 + \beta_1 x_n + \beta_2 z_n + \epsilon_n \\
-\epsilon \sim N(0, 1).
+\epsilon_n \sim N(0, 1).
 \end{aligned}
 $$
 
@@ -36,10 +36,9 @@ z = np.random.binomial(1, 1 / 2, size=size)
 epsilon = np.random.normal(size=size)
 beta = [1.00, 0.32, 0.16]
 y = beta[0] + beta[1] * x + beta[2] * z + epsilon
-xs = np.column_stack((np.ones(size), x, z))
-xys = list(zip(xs, y))
+data = np.column_stack((y, np.ones(size), x, z))
 
-print(xys[0])
+print(data)
 ```
 
 We can test the hypothesis
@@ -51,10 +50,10 @@ H_1: \mathbf{\beta_2} \neq 0
 \end{align}
 $$
 
-as well as estimate confidence sequences for $\beta_2$ at a significance level $\alpha$ using a `LinearRegression` model:
+and estimate $(1 - \alpha)$ confidence sequences for $\beta_2$ using a `LinearRegression` model:
 
 ```{python}
-#| label: hypothesis
+#| label: sequence
 from savvi.linear_regression import LinearRegression
 
 alpha = 0.05
@@ -62,13 +61,13 @@ p = xs.shape[1]
 lr = LinearRegression(alpha, p)
 ```
 
-For each new unit sample $n$, we run the test. If $p_n < \alpha$, we have the option to stop running:
+For each new unit sample $n$, we run the test. If $p_n(\beta_2) < \alpha$, we have the option to stop running:
 
 ```{python}
-#| label: sequence
+#| label: stop
 sequence = lr.batch(xys)
 optional_stop = next(s for s in sequence if s.p_value[2] <= alpha)
-vars(optional_stop)
+print(optional_stop)
 ```
 
 ```{python}
