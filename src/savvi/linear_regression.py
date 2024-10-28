@@ -6,42 +6,36 @@ import numpy as np
 # NOTE f-test can't be implemented online
 class LinearRegression(Inference):
     """
-    Treatment effect tests from @lindon2024anytimevalidlinearmodelsregression.
+    Coefficient t-test for treatment effects from @lindon2024anytimevalidlinearmodelsregression.
 
-    Coefficients are calculated using the Recursive Least Squares algorithm.
+    Coefficients and covariance matrix are calculated using the Recursive Least
+    Squares algorithm.
 
-    See [example](../examples/linear_regression.qmd).
+    * Parent class: [`Inference`](/reference/Inference.qmd)
+    * [Example](../examples/LinearRegression.qmd)
 
-    Attributes
+    Parameters
     ----------
-    beta : np.ndarray
-        Estimate of regression coefficients.
-    covariance : np.ndarray
-        Estimate of covariance matrix.
-    yty : float
-        Sum of squared response values.
-    Xty : np.ndarray
-        Sum of products of covariates and response.
+    alpha : float
+        Probability of Type I error $\\alpha$.
+    p : int
+        Number of covariates $p$.
+    phi : float, optional
+        Prior scale $\\phi$.
     """
 
+    phi: float
+    """Prior scale $\\phi$."""
     beta: np.ndarray
+    """Estimate of regression coefficients $\\hat{\\beta}$."""
     covariance: np.ndarray
+    """Estimate of covariance matrix $\\hat{\\Sigma}$."""
     yty: float
+    """Sum of squared response values $y^T y$."""
     Xty: np.ndarray
+    """Sum of products of covariates and response $X^T y$."""
 
     def __init__(self, alpha: float, p: int, phi: float = 1):
-        """
-        Initialize a Linear Regression model using RLS.
-
-        Parameters
-        ----------
-        alpha : float
-            Significance level for inference.
-        p : int
-            Number of covariates.
-        phi : float, optional
-            Prior scale (default is 1).
-        """
         self.lamb = 1  # TODO remove
         self.phi = phi
         self.beta = np.zeros(p)
@@ -58,18 +52,19 @@ class LinearRegression(Inference):
     def estimate(self) -> np.ndarray:
         return self.beta
 
-    def update(self, xy: Tuple[np.ndarray, float]) -> None:
+    def update(self, yx: np.ndarray) -> None:
         """
         Update the model with new data.
 
         Parameters
         ----------
-        xy : Tuple[np.ndarray, float]
-            Tuple of response and covariate values.
+        yx : np.ndarray
+            Array of response and covariate values $[y, x_1, \dots, x_p]$.
         """
         self.n += 1
 
-        x, y = xy
+        y = yx[0]
+        x = yx[1:]
         self.yty = self.lamb * self.yty + y * y
         self.Xty = self.lamb * self.Xty + y * x
 
@@ -83,14 +78,6 @@ class LinearRegression(Inference):
         self.covariance = (self.covariance + self.covariance.T) / 2  # Ensure symmetry
 
     def calculate_conf_int(self) -> np.ndarray:
-        """
-        Calculate confidence intervals for the coefficients.
-
-        Returns
-        -------
-        np.ndarray
-            Confidence intervals for the coefficients.
-        """
         if self.nu() <= 0:
             return self.conf_int
         stderrs = self.standard_errors()
@@ -107,14 +94,6 @@ class LinearRegression(Inference):
         return np.column_stack((lowers, uppers))
 
     def calculate_p_value(self) -> np.ndarray:
-        """
-        Calculate p-values for the coefficients.
-
-        Returns
-        -------
-        np.ndarray
-            P-values for the coefficients.
-        """
         if self.nu() <= 0:
             return self.p_value
         t2 = self.t_stats() ** 2
@@ -131,8 +110,7 @@ class LinearRegression(Inference):
 
         Returns
         -------
-        np.ndarray
-            Predicted values.
+        :
         """
         return np.dot(X, self.beta)
 
@@ -142,8 +120,7 @@ class LinearRegression(Inference):
 
         Returns
         -------
-        float
-            SSE value.
+        :
         """
         return self.yty - np.dot(self.beta, self.Xty)
 
@@ -153,8 +130,7 @@ class LinearRegression(Inference):
 
         Returns
         -------
-        float
-            Estimate of the standard deviation of the error term.
+        :
         """
         return np.sqrt(self.sse() / (self.n - self.p))
 
@@ -164,8 +140,7 @@ class LinearRegression(Inference):
 
         Returns
         -------
-        np.ndarray
-            Estimate of the standard errors of the coefficients.
+        :
         """
         return np.sqrt(np.diag(self.covariance) * self.sigma() ** 2)
 
@@ -175,8 +150,7 @@ class LinearRegression(Inference):
 
         Returns
         -------
-        np.ndarray
-            T statistics of the coefficients.
+        :
         """
         return self.beta / self.standard_errors()
 
@@ -186,8 +160,7 @@ class LinearRegression(Inference):
 
         Returns
         -------
-        int
-            Degrees of freedom.
+        :
         """
         return self.n - self.p - 1
 
@@ -197,8 +170,7 @@ class LinearRegression(Inference):
 
         Returns
         -------
-        np.ndarray
-            Squared z-scores.
+        :
         """
         stderrs = self.standard_errors()
         s = self.sigma()
