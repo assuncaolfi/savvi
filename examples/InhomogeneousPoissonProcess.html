@@ -54,27 +54,7 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-/* CSS for citations */
-div.csl-bib-body { }
-div.csl-entry {
-  clear: both;
-  margin-bottom: 0em;
-}
-.hanging-indent div.csl-entry {
-  margin-left:2em;
-  text-indent:-2em;
-}
-div.csl-left-margin {
-  min-width:2em;
-  float:left;
-}
-div.csl-right-inline {
-  margin-left:2em;
-  padding-left:1em;
-}
-div.csl-indent {
-  margin-left: 2em;
-}</style>
+</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -216,6 +196,7 @@ window.Quarto = {
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Inhomogeneous Poisson Process</h1>
+<p class="subtitle lead"><a href="../reference/InhomogeneousPoissonProcess.html">Reference</a></p>
 </div>
 
 
@@ -233,19 +214,18 @@ window.Quarto = {
 
 
 <p><em>Application: software canary testing when all processes share a common multiplicative time-varying effect.</em></p>
-<p>Based on <span class="citation" data-cites="lindon2022anytimevalid">Lindon and Malek (<a href="#ref-lindon2022anytimevalid" role="doc-biblioref">2022</a>)</span>.</p>
 <p>Consider points are observed from one of <span class="math inline">\(i \in \{1, 2\}\)</span> Poisson point processes with intensity functions <span class="math inline">\(\lambda_i(t) = \rho_i \exp(\delta_i) \lambda(t)\)</span>, with <span class="math inline">\(\rho = [0.8, 0.2]\)</span> and <span class="math inline">\(\delta = [1.5, 2]\)</span>. The probability that the next point comes from process <span class="math inline">\(i\)</span> is</p>
 <p><span class="math display">\[
 \theta_i = \frac{\rho_i \exp(\delta_i)}{\sum_{j=1}^d \rho_j \exp(\delta_j)}.
 \]</span></p>
 <p>Therefore, the next point comes from a random process, distributed as <span class="math inline">\(\mathrm{Multinomial}(1, \mathbf{\theta})\)</span>, with <span class="math inline">\(\mathbf{\theta} \approx [0.7, 0.3]\)</span>.</p>
-<div id="data" class="cell" data-execution_count="2">
+<div id="data" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>rho <span class="op">=</span> np.array([<span class="fl">0.8</span>, <span class="fl">0.2</span>])</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>delta <span class="op">=</span> np.array([<span class="fl">1.5</span>, <span class="dv">2</span>])</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>theta <span class="op">=</span> rho <span class="op">*</span> np.exp(delta) <span class="op">/</span> np.<span class="bu">sum</span>(rho <span class="op">*</span> np.exp(delta))</span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> <span class="dv">1500</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> <span class="dv">1000</span></span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>np.random.seed(<span class="dv">1</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> np.random.multinomial(<span class="dv">1</span>, theta, size<span class="op">=</span>size)</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(xs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -266,49 +246,77 @@ H_0: \delta_1 - \delta_0 = 0 \quad (\mathbf{\theta} = \mathbf{\rho}) \\
 H_1: \delta_1 - \delta_0 \neq 0  \quad (\mathbf{\theta} \neq \mathbf{\rho})
 \end{align}
 \]</span></p>
-<p>using a Multinomial test with <span class="math inline">\(\alpha = 0.05\)</span>, <span class="math inline">\(\mathbf{\theta}_0 = \mathbf{\rho}\)</span> and contrast weights <span class="math inline">\([-1, 1]\)</span> to estimate a confidence sequence for <span class="math inline">\(\delta_1 - \delta_0\)</span>:</p>
-<div id="hypothesis" class="cell" data-execution_count="3">
+<p>using a Multinomial test with <span class="math inline">\(\mathbf{\theta}_0 = \mathbf{\rho}\)</span>. To estimate a <span class="math inline">\((1 - \alpha)\)</span> confidence sequence for <span class="math inline">\(\delta_1 - \delta_0\)</span>, we may set weights <span class="math inline">\([-1, 1]\)</span>:</p>
+<div id="hypothesis" class="cell" data-message="false" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> savvi.multinomial <span class="im">import</span> InhomogeneousPoissonProcess</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
 <span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>weights <span class="op">=</span> np.array([[<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>]])</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>ipp <span class="op">=</span> InhomogeneousPoissonProcess(alpha, rho, weights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-error">
+<pre><code>AttributeError: _ARRAY_API not found</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>(CVXPY) Oct 24 05:34:42 PM: Encountered unexpected exception importing solver ECOS:
+ImportError('numpy.core.multiarray failed to import')
+(CVXPY) Oct 24 05:34:42 PM: Encountered unexpected exception importing solver SCS:
+ImportError('numpy.core.multiarray failed to import')
+(CVXPY) Oct 24 05:34:42 PM: Encountered unexpected exception importing solver ECOS_BB:
+ImportError('numpy.core.multiarray failed to import')
+(CVXPY) Oct 24 05:34:42 PM: Encountered unexpected exception importing solver OSQP:
+ImportError('numpy.core.multiarray failed to import')</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>AttributeError: _ARRAY_API not found</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>AttributeError: _ARRAY_API not found</code></pre>
+</div>
+<div class="cell-output cell-output-error">
+<pre><code>AttributeError: _ARRAY_API not found</code></pre>
+</div>
 </div>
 <p>For each new unit sample <span class="math inline">\(n\)</span>, we run the test. If <span class="math inline">\(p_n &lt; \alpha\)</span>, we have the option to stop running:</p>
-<div id="cell-sequence" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> cvxpy <span class="im">as</span> cp</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>solver <span class="op">=</span> cp.CLARABEL</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>sequence <span class="op">=</span> ipp.batch(xs, solver<span class="op">=</span>solver)</span>
-<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>optional_stop <span class="op">=</span> <span class="bu">next</span>(s <span class="cf">for</span> s <span class="kw">in</span> sequence <span class="cf">if</span> s.p_value <span class="op">&lt;=</span> alpha)</span>
-<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(optional_stop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div id="sequence" class="cell-output cell-output-display" data-execution_count="3">
-<pre><code>{'n': 210,
- 'alpha': 0.05,
- 'conf_int': array([[0.00464625, 0.75493987]]),
- 'p_value': array([0.04557963]),
- 'theta_0': array([0.8, 0.2]),
- 'alpha_0': array([80., 20.]),
- 'counts': array([148,  62]),
- 'odds': 21.93962437612422,
- 'hypothesis': &lt;function savvi.multinomial.InhomogeneousPoissonProcess.__init__.&lt;locals&gt;.&lt;lambda&gt;(_)&gt;,
- 'weights': array([[-1,  1]])}</code></pre>
+<div id="cell-sequence" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>sequence <span class="op">=</span> ipp.batch(xs)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>optional_stop <span class="op">=</span> <span class="bu">next</span>(s <span class="cf">for</span> s <span class="kw">in</span> sequence <span class="cf">if</span> s.p_value <span class="op">&lt;=</span> alpha)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>optional_stop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="sequence" class="cell-output cell-output-display cell-output-markdown" data-execution_count="3">
+<table class="caption-top table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Estimate</th>
+<th>CI Lower</th>
+<th>CI Upper</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(- \delta_0 +  \delta_1\)</span></td>
+<td>0.5162</td>
+<td>0.0046</td>
+<td>0.7549</td>
+</tr>
+</tbody>
+</table>
+<p>Sample size: 210, P-value: 0.0456</p>
 </div>
 </div>
-<div id="cell-plot" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> savvi.utils <span class="im">import</span> plot</span>
-<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> ipp.weights <span class="op">@</span> delta</span>
-<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>_, ax1, _ <span class="op">=</span> plot(sequence, contrasts)</span>
-<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>)</span>
-<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-viz" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> savvi.utils <span class="im">import</span> plot</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>contrasts <span class="op">=</span> ipp.weights <span class="op">@</span> delta</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>_, ax1, _ <span class="op">=</span> plot(sequence, contrasts)</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(<span class="op">-</span><span class="dv">1</span>, <span class="dv">2</span>)</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="InhomogeneousPoissonProcess_files/figure-html/plot-output-1.svg" id="plot" class="img-fluid figure-img"></p>
+<p><img src="InhomogeneousPoissonProcess_files/figure-html/viz-output-1.svg" id="viz" class="img-fluid figure-img"></p>
 </figure>
 </div>
 </div>
@@ -316,12 +324,7 @@ H_1: \delta_1 - \delta_0 \neq 0  \quad (\mathbf{\theta} \neq \mathbf{\rho})
 
 
 
-
-<div id="quarto-appendix" class="default"><section class="quarto-appendix-contents" role="doc-bibliography" id="quarto-bibliography"><h2 class="anchored quarto-appendix-heading">References</h2><div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
-<div id="ref-lindon2022anytimevalid" class="csl-entry" role="listitem">
-Lindon, Michael, and Alan Malek. 2022. <span>“Anytime-Valid Inference for Multinomial Count Data.”</span> In <em>Advances in Neural Information Processing Systems</em>, edited by Alice H. Oh, Alekh Agarwal, Danielle Belgrave, and Kyunghyun Cho. <a href="https://openreview.net/forum?id=a4zg0jiuVi">https://openreview.net/forum?id=a4zg0jiuVi</a>.
-</div>
-</div></section></div></main> <!-- /main -->
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
