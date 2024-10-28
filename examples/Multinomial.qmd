@@ -1,5 +1,6 @@
 ---
 title: Multinomial
+subtitle: '[Reference](../reference/Multinomial.qmd)'
 jupyter:
   jupytext:
     text_representation:
@@ -14,8 +15,6 @@ jupyter:
 ---
 
 _Application: sample ratio mismatch._ 
-
-Based on @lindon2022anytimevalid.
 
 Consider a new experimental unit $n$ is assigned to one of $i \in \{1, 2, 3\}$ groups with probabilities $\mathbf{\theta} = [0.1, 0.3, 0.6]$. Therefore, groups are $\mathrm{Multinomial}(1, \mathbf{\theta})$ distributed.
 
@@ -39,15 +38,17 @@ H_1: \mathbf{\theta} \neq \mathbf{\theta_0}
 \end{align}
 $$
 
-with $\mathbf{\theta_0} = [0.1, 0.4, 0.5]$, as well as estimate confidence sequences for $\theta$ at a significance level $\alpha$, using the default Multinomial test:
+with $\mathbf{\theta_0} = [0.1, 0.4, 0.5]$ and estimate $(1 - \alpha)$ confidence sequences for $\mathbf{\theta}$ using the `Multinomial` test:
 
 ```{python}
 #| label: hypothesis
+#| message: false
+#| warning: false
 from savvi.multinomial import Multinomial
 
 alpha = 0.05
 theta_0 = np.array([0.1, 0.4, 0.5])
-multinomial = Multinomial(0.05, theta_0)
+multinomial = Multinomial(alpha, theta_0)
 ```
 
 For each new unit sample $n$, we run the test. If $p_n < \alpha$, we have the option to stop running:
@@ -55,17 +56,15 @@ For each new unit sample $n$, we run the test. If $p_n < \alpha$, we have the op
 ```{python}
 #| label: sequence
 #| warning: false
-import cvxpy as cp
-sequence = multinomial.batch(xs, solver=cp.CLARABEL)
+sequence = multinomial.batch(xs)
 optional_stop = next(s for s in sequence if s.p_value <= alpha)
-vars(optional_stop)
+optional_stop
 ```
 
 ```{python}
-#| label: fig
+#| label: viz
 #| code-fold: true
 %config InlineBackend.figure_formats = ["svg"]
-
 from savvi.utils import plot
 
 plot(sequence, theta);

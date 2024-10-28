@@ -121,6 +121,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -283,84 +312,19 @@ div.csl-indent {
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>    weights</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>    k<span class="op">=</span><span class="dv">100</span></span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Rate optimization test from <span class="citation" data-cites="lindon2022anytimevalid">Lindon and Malek (<a href="#ref-lindon2022anytimevalid" role="doc-biblioref">2022</a>)</span>. See <a href="../examples/InhomogeneousBernoulliProcess.html">example</a>.</p>
-<section id="attributes" class="level2">
-<h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="#savvi.multinomial.InhomogeneousBernoulliProcess.delta">delta</a></td>
-<td>Calculate the delta values.</td>
-</tr>
-<tr class="even">
-<td><a href="#savvi.multinomial.InhomogeneousBernoulliProcess.names">names</a></td>
-<td>Get the names of the parameters.</td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="methods" class="level2">
-<h2 class="anchored" data-anchor-id="methods">Methods</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="#savvi.multinomial.InhomogeneousBernoulliProcess.calculate_conf_int">calculate_conf_int</a></td>
-<td>Calculate confidence intervals for the parameters.</td>
-</tr>
-<tr class="even">
-<td><a href="#savvi.multinomial.InhomogeneousBernoulliProcess.update_odds">update_odds</a></td>
-<td>Update the odds ratio.</td>
-</tr>
-</tbody>
-</table>
-<section id="savvi.multinomial.InhomogeneousBernoulliProcess.calculate_conf_int" class="level3">
-<h3 class="anchored" data-anchor-id="savvi.multinomial.InhomogeneousBernoulliProcess.calculate_conf_int">calculate_conf_int</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>multinomial.InhomogeneousBernoulliProcess.calculate_conf_int(<span class="op">**</span>kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Calculate confidence intervals for the parameters.</p>
-<section id="returns" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns">Returns</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>np.ndarray</td>
-<td>The calculated confidence intervals.</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="savvi.multinomial.InhomogeneousBernoulliProcess.update_odds" class="level3">
-<h3 class="anchored" data-anchor-id="savvi.multinomial.InhomogeneousBernoulliProcess.update_odds">update_odds</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>multinomial.InhomogeneousBernoulliProcess.update_odds(x, <span class="op">**</span>kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Update the odds ratio.</p>
-<section id="parameters" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h4>
+<p>Conversion rate optimization test from <span class="citation" data-cites="lindon2022anytimevalid">Lindon and Malek (<a href="#ref-lindon2022anytimevalid" role="doc-biblioref">2022</a>)</span>.</p>
+<ul>
+<li>Parent class: <a href="../reference/Multinomial.html"><code>Multinomial</code></a></li>
+<li><a href="../examples/InhomogeneousBernoulliProcess.html">Example</a></li>
+</ul>
+<section id="parameters" class="level2 doc-section doc-section-parameters">
+<h2 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="table">
 <colgroup>
-<col style="width: 11%">
-<col style="width: 17%">
+<col style="width: 7%">
+<col style="width: 32%">
 <col style="width: 52%">
-<col style="width: 17%">
+<col style="width: 7%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -372,37 +336,65 @@ div.csl-indent {
 </thead>
 <tbody>
 <tr class="odd">
-<td>x</td>
-<td>np.ndarray</td>
-<td>New data to update the odds ratio.</td>
+<td>alpha</td>
+<td>float</td>
+<td>Probability of Type I error <span class="math inline">\(\alpha\)</span>.</td>
 <td><em>required</em></td>
+</tr>
+<tr class="even">
+<td>rho</td>
+<td>np.ndarray</td>
+<td>Assignment probabilities <span class="math inline">\(\mathbf{\rho}\)</span>.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="odd">
+<td>hypothesis</td>
+<td>Callable[[cp.Variable], List[cp.Constraint]]</td>
+<td>Function to generate hypothesis constraints.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="even">
+<td>weights</td>
+<td>np.ndarray</td>
+<td>Contrast weights <span class="math inline">\(W\)</span>.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="odd">
+<td>k</td>
+<td>float</td>
+<td>Concentration for Dirichlet prior parameters <span class="math inline">\(\mathbf{\alpha}_0 = k \mathbf{\rho}\)</span>.</td>
+<td><code>100</code></td>
 </tr>
 </tbody>
 </table>
 </section>
-<section id="returns-1" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-1">Returns</h4>
+<section id="attributes" class="level2">
+<h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
 <table class="table">
 <thead>
 <tr class="header">
 <th>Name</th>
-<th>Type</th>
 <th>Description</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td></td>
-<td>float</td>
-<td>The updated odds ratio.</td>
+<td><a href="#savvi.multinomial.InhomogeneousBernoulliProcess.contrasts">contrasts</a></td>
+<td>Estimate of contrasts <span class="math inline">\(\hat{W \mathbf{\delta}}\)</span>.</td>
+</tr>
+<tr class="even">
+<td><a href="#savvi.multinomial.InhomogeneousBernoulliProcess.hypothesis">hypothesis</a></td>
+<td>Function to generate hypothesis constraints.</td>
+</tr>
+<tr class="odd">
+<td><a href="#savvi.multinomial.InhomogeneousBernoulliProcess.weights">weights</a></td>
+<td>Contrast weights <span class="math inline">\(W\)</span>.</td>
 </tr>
 </tbody>
 </table>
 
 
 
-</section>
-</section>
 </section>
 </section>
 

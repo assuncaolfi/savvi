@@ -11,53 +11,25 @@ multinomial.InhomogeneousBernoulliProcess(
 )
 ```
 
-Rate optimization test from @lindon2022anytimevalid.
-See [example](../examples/InhomogeneousBernoulliProcess.qmd).
+Conversion rate optimization test from @lindon2022anytimevalid.
+
+* Parent class: [`Multinomial`](/reference/Multinomial.qmd)
+* [Example](../examples/InhomogeneousBernoulliProcess.qmd)
+
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name       | Type                                               | Description                                                                         | Default    |
+|------------|----------------------------------------------------|-------------------------------------------------------------------------------------|------------|
+| alpha      | float                                              | Probability of Type I error $\alpha$.                                               | _required_ |
+| rho        | np.ndarray                                         | Assignment probabilities $\mathbf{\rho}$.                                           | _required_ |
+| hypothesis | Callable\[\[cp.Variable\], List\[cp.Constraint\]\] | Function to generate hypothesis constraints.                                        | _required_ |
+| weights    | np.ndarray                                         | Contrast weights $W$.                                                               | _required_ |
+| k          | float                                              | Concentration for Dirichlet prior parameters $\mathbf{\alpha}_0 = k \mathbf{\rho}$. | `100`      |
 
 ## Attributes
 
 | Name | Description |
 | --- | --- |
-| [delta](#savvi.multinomial.InhomogeneousBernoulliProcess.delta) | Calculate the delta values. |
-| [names](#savvi.multinomial.InhomogeneousBernoulliProcess.names) | Get the names of the parameters. |
-
-## Methods
-
-| Name | Description |
-| --- | --- |
-| [calculate_conf_int](#savvi.multinomial.InhomogeneousBernoulliProcess.calculate_conf_int) | Calculate confidence intervals for the parameters. |
-| [update_odds](#savvi.multinomial.InhomogeneousBernoulliProcess.update_odds) | Update the odds ratio. |
-
-### calculate_conf_int { #savvi.multinomial.InhomogeneousBernoulliProcess.calculate_conf_int }
-
-```python
-multinomial.InhomogeneousBernoulliProcess.calculate_conf_int(**kwargs)
-```
-
-Calculate confidence intervals for the parameters.
-
-#### Returns {.doc-section .doc-section-returns}
-
-| Name   | Type       | Description                          |
-|--------|------------|--------------------------------------|
-|        | np.ndarray | The calculated confidence intervals. |
-
-### update_odds { #savvi.multinomial.InhomogeneousBernoulliProcess.update_odds }
-
-```python
-multinomial.InhomogeneousBernoulliProcess.update_odds(x, **kwargs)
-```
-
-Update the odds ratio.
-
-#### Parameters {.doc-section .doc-section-parameters}
-
-| Name   | Type       | Description                        | Default    |
-|--------|------------|------------------------------------|------------|
-| x      | np.ndarray | New data to update the odds ratio. | _required_ |
-
-#### Returns {.doc-section .doc-section-returns}
-
-| Name   | Type   | Description             |
-|--------|--------|-------------------------|
-|        | float  | The updated odds ratio. |
+| [contrasts](#savvi.multinomial.InhomogeneousBernoulliProcess.contrasts) | Estimate of contrasts $\hat{W \mathbf{\delta}}$. |
+| [hypothesis](#savvi.multinomial.InhomogeneousBernoulliProcess.hypothesis) | Function to generate hypothesis constraints. |
+| [weights](#savvi.multinomial.InhomogeneousBernoulliProcess.weights) | Contrast weights $W$. |

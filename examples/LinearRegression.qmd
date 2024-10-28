@@ -34,40 +34,41 @@ np.random.seed(1)
 x = np.random.normal(size=size)
 z = np.random.binomial(1, 1 / 2, size=size)
 epsilon = np.random.normal(size=size)
-beta = [1.00, 0.32, 0.16]
+beta = np.array([1.00, 0.32, 0.16])
 y = beta[0] + beta[1] * x + beta[2] * z + epsilon
-data = np.column_stack((y, np.ones(size), x, z))
+yx = np.column_stack((y, np.ones(size), x, z))
 
-print(data)
+print(yx)
 ```
 
 We can test the hypothesis
 
 $$
 \begin{align}
-H_0: \mathbf{\beta_2} = 0 \\
-H_1: \mathbf{\beta_2} \neq 0
+H_0: \beta_2 = 0 \\
+H_1: \beta_2 \neq 0
 \end{align}
 $$
 
 and estimate $(1 - \alpha)$ confidence sequences for $\beta_2$ using a `LinearRegression` model:
 
 ```{python}
-#| label: sequence
+#| label: hypothesis
 from savvi.linear_regression import LinearRegression
 
 alpha = 0.05
-p = xs.shape[1]
+p = beta.size
 lr = LinearRegression(alpha, p)
 ```
 
 For each new unit sample $n$, we run the test. If $p_n(\beta_2) < \alpha$, we have the option to stop running:
 
 ```{python}
-#| label: stop
-sequence = lr.batch(xys)
+#| label: sequence
+#| warning: false
+sequence = lr.batch(yx)
 optional_stop = next(s for s in sequence if s.p_value[2] <= alpha)
-print(optional_stop)
+optional_stop
 ```
 
 ```{python}

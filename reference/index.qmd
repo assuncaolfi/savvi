@@ -10,12 +10,12 @@
 
 | | |
 | --- | --- |
-| [LinearRegression](LinearRegression.qmd#savvi.linear_regression.LinearRegression) | Treatment effect tests from @lindon2024anytimevalidlinearmodelsregression. |
+| [LinearRegression](LinearRegression.qmd#savvi.linear_regression.LinearRegression) | Coefficient t-test for treatment effects from @lindon2024anytimevalidlinearmodelsregression. |
 
 ### multinomial
 
 | | |
 | --- | --- |
 | [Multinomial](Multinomial.qmd#savvi.multinomial.Multinomial) | Sample ratio mismatch test from @lindon2022anytimevalid. |
-| [InhomogeneousBernoulliProcess](InhomogeneousBernoulliProcess.qmd#savvi.multinomial.InhomogeneousBernoulliProcess) | Rate optimization test from @lindon2022anytimevalid. |
+| [InhomogeneousBernoulliProcess](InhomogeneousBernoulliProcess.qmd#savvi.multinomial.InhomogeneousBernoulliProcess) | Conversion rate optimization test from @lindon2022anytimevalid. |
 | [InhomogeneousPoissonProcess](InhomogeneousPoissonProcess.qmd#savvi.multinomial.InhomogeneousPoissonProcess) | Canary software release test from @lindon2022anytimevalid. |

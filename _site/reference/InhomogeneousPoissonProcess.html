@@ -121,6 +121,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -276,35 +305,19 @@ div.csl-indent {
 <section id="savvi.multinomial.InhomogeneousPoissonProcess" class="level1">
 <h1>InhomogeneousPoissonProcess</h1>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>multinomial.InhomogeneousPoissonProcess(<span class="va">self</span>, alpha, rho, weights, k<span class="op">=</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Canary software release test from <span class="citation" data-cites="lindon2022anytimevalid">Lindon and Malek (<a href="#ref-lindon2022anytimevalid" role="doc-biblioref">2022</a>)</span>. See <a href="../examples/InhomogeneousPoissonProcess.html">example</a>.</p>
-<section id="methods" class="level2">
-<h2 class="anchored" data-anchor-id="methods">Methods</h2>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td><a href="#savvi.multinomial.InhomogeneousPoissonProcess.update_odds">update_odds</a></td>
-<td>Update the odds ratio using the Multinomial update method.</td>
-</tr>
-</tbody>
-</table>
-<section id="savvi.multinomial.InhomogeneousPoissonProcess.update_odds" class="level3">
-<h3 class="anchored" data-anchor-id="savvi.multinomial.InhomogeneousPoissonProcess.update_odds">update_odds</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>multinomial.InhomogeneousPoissonProcess.update_odds(x, <span class="op">**</span>kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Update the odds ratio using the Multinomial update method.</p>
-<section id="parameters" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h4>
+<p>Canary software release test from <span class="citation" data-cites="lindon2022anytimevalid">Lindon and Malek (<a href="#ref-lindon2022anytimevalid" role="doc-biblioref">2022</a>)</span>.</p>
+<ul>
+<li>Parent class: <a href="../reference/InhomogeneousBernoulliProcess.html"><code>InhomogeneousBernoulliProcess</code></a></li>
+<li><a href="../examples/InhomogeneousPoissonProcess.html">Example</a></li>
+</ul>
+<section id="parameters" class="level2 doc-section doc-section-parameters">
+<h2 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="table">
 <colgroup>
-<col style="width: 11%">
-<col style="width: 17%">
-<col style="width: 52%">
-<col style="width: 17%">
+<col style="width: 7%">
+<col style="width: 10%">
+<col style="width: 72%">
+<col style="width: 10%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -316,37 +329,34 @@ div.csl-indent {
 </thead>
 <tbody>
 <tr class="odd">
-<td>x</td>
-<td>np.ndarray</td>
-<td>New data to update the odds ratio.</td>
+<td>alpha</td>
+<td>float</td>
+<td>Probability of Type I error <span class="math inline">\(\alpha\)</span>.</td>
 <td><em>required</em></td>
 </tr>
-</tbody>
-</table>
-</section>
-<section id="returns" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns">Returns</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
+<tr class="even">
+<td>rho</td>
+<td>np.ndarray</td>
+<td>Assignment probabilities <span class="math inline">\(\mathbf{\rho}\)</span>.</td>
+<td><em>required</em></td>
 </tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td></td>
+<td>weights</td>
+<td>np.ndarray</td>
+<td>Contrast weights <span class="math inline">\(W\)</span>.</td>
+<td><em>required</em></td>
+</tr>
+<tr class="even">
+<td>k</td>
 <td>float</td>
-<td>The updated odds ratio.</td>
+<td>Concentration for Dirichlet prior parameters <span class="math inline">\(\mathbf{\alpha}_0 = k \mathbf{\rho}\)</span>.</td>
+<td><code>100</code></td>
 </tr>
 </tbody>
 </table>
 
 
 
-</section>
-</section>
 </section>
 </section>
 

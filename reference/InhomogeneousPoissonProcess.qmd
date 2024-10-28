@@ -5,30 +5,15 @@ multinomial.InhomogeneousPoissonProcess(self, alpha, rho, weights, k=100)
 ```
 
 Canary software release test from @lindon2022anytimevalid.
-See [example](../examples/InhomogeneousPoissonProcess.qmd).
 
-## Methods
+* Parent class: [`InhomogeneousBernoulliProcess`](/reference/InhomogeneousBernoulliProcess.qmd)
+* [Example](../examples/InhomogeneousPoissonProcess.qmd)
 
-| Name | Description |
-| --- | --- |
-| [update_odds](#savvi.multinomial.InhomogeneousPoissonProcess.update_odds) | Update the odds ratio using the Multinomial update method. |
+## Parameters {.doc-section .doc-section-parameters}
 
-### update_odds { #savvi.multinomial.InhomogeneousPoissonProcess.update_odds }
-
-```python
-multinomial.InhomogeneousPoissonProcess.update_odds(x, **kwargs)
-```
-
-Update the odds ratio using the Multinomial update method.
-
-#### Parameters {.doc-section .doc-section-parameters}
-
-| Name   | Type       | Description                        | Default    |
-|--------|------------|------------------------------------|------------|
-| x      | np.ndarray | New data to update the odds ratio. | _required_ |
-
-#### Returns {.doc-section .doc-section-returns}
-
-| Name   | Type   | Description             |
-|--------|--------|-------------------------|
-|        | float  | The updated odds ratio. |
+| Name    | Type       | Description                                                                         | Default    |
+|---------|------------|-------------------------------------------------------------------------------------|------------|
+| alpha   | float      | Probability of Type I error $\alpha$.                                               | _required_ |
+| rho     | np.ndarray | Assignment probabilities $\mathbf{\rho}$.                                           | _required_ |
+| weights | np.ndarray | Contrast weights $W$.                                                               | _required_ |
+| k       | float      | Concentration for Dirichlet prior parameters $\mathbf{\alpha}_0 = k \mathbf{\rho}$. | `100`      |

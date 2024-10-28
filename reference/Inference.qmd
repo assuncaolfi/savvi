@@ -6,22 +6,33 @@ Inference(self, alpha, p, tests=1)
 
 Base class for inference.
 
+## Parameters {.doc-section .doc-section-parameters}
+
+| Name   | Type   | Description                           | Default    |
+|--------|--------|---------------------------------------|------------|
+| alpha  | float  | Probability of Type I error $\alpha$. | _required_ |
+| p      | int    | Number of parameters $p$.             | _required_ |
+| tests  | int    | Number of hypothesis tests.           | `1`        |
+
 ## Attributes
 
 | Name | Description |
 | --- | --- |
-| [names](#savvi.Inference.names) | Names of the parameters. |
-| [p](#savvi.Inference.p) | Number of parameters. |
+| [alpha](#savvi.Inference.alpha) | Probability of Type I error $\alpha$. |
+| [conf_int](#savvi.Inference.conf_int) | Confidence intervals for each parameter ($p \times 2$ matrix). |
+| [estimate](#savvi.Inference.estimate) | Estimates for each parameter. |
+| [n](#savvi.Inference.n) | Number of observations $n$. |
+| [names](#savvi.Inference.names) | Names for each parameter. |
+| [p](#savvi.Inference.p) | Number of parameters $p$. |
+| [p_value](#savvi.Inference.p_value) | P-values for each hypothesis test. |
 
 ## Methods
 
 | Name | Description |
 | --- | --- |
-| [batch](#savvi.Inference.batch) | For each sample unit in the batch: update, infer and keep the inference object. |
-| [calculate_conf_int](#savvi.Inference.calculate_conf_int) | Calculate confidence interval. |
-| [calculate_p_value](#savvi.Inference.calculate_p_value) | Calculate p-value. |
-| [infer](#savvi.Inference.infer) | Calculate confidence interval and p-value, then: |
-| [update](#savvi.Inference.update) | Update statistics. |
+| [batch](#savvi.Inference.batch) | For each sample unit in the batch |
+| [infer](#savvi.Inference.infer) | Calculate confidence interval and p-value, then |
+| [update](#savvi.Inference.update) | Update statistics with new data. |
 
 ### batch { #savvi.Inference.batch }
 
@@ -29,23 +40,17 @@ Base class for inference.
 Inference.batch(xs, **kwargs)
 ```
 
-For each sample unit in the batch: update, infer and keep the inference object.
+For each sample unit in the batch
 
-### calculate_conf_int { #savvi.Inference.calculate_conf_int }
+1) call `update`,
+2) call `infer`, and
+3) append the `Inference` object to a list.
 
-```python
-Inference.calculate_conf_int(**kwargs)
-```
+#### Returns {.doc-section .doc-section-returns}
 
-Calculate confidence interval.
-
-### calculate_p_value { #savvi.Inference.calculate_p_value }
-
-```python
-Inference.calculate_p_value(**kwargs)
-```
-
-Calculate p-value.
+| Name   | Type              | Description   |
+|--------|-------------------|---------------|
+|        | List\[Inference\] |               |
 
 ### infer { #savvi.Inference.infer }
 
@@ -53,10 +58,11 @@ Calculate p-value.
 Inference.infer(**kwargs)
 ```
 
-Calculate confidence interval and p-value, then:
+Calculate confidence interval and p-value, then
 
-* Keep the maximum lower bound and minimum upper bound for the confidence interval;
-* Keep the minimum p-value.
+1) keep the maximum lower bound and minimum upper bound for the
+confidence interval; and
+2) keep the minimum p-value.
 
 ### update { #savvi.Inference.update }
 
@@ -64,4 +70,4 @@ Calculate confidence interval and p-value, then:
 Inference.update(x, **kwargs)
 ```
 
-Update statistics.
+Update statistics with new data.

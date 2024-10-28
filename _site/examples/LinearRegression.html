@@ -214,14 +214,14 @@ window.Quarto = {
 
 
 <p><em>Application: testing of treatment effects while adjusting for pre-treatment covariables.</em></p>
-<p>Consider a new experimental unit <span class="math inline">\(n\)</span>. This unit has a pre-treatment measurement <span class="math inline">\(x_n \in \mathbb{R}\)</span> and is assigned a treatment <span class="math inline">\(z_n \in \{0, 1\}\)</span>. After the treatment, the unit produces an outcome:</p>
+<p>Consider the arrival of a new experimental unit <span class="math inline">\(n\)</span>. This unit has a pre-treatment measurement <span class="math inline">\(x_n \in \mathbb{R}\)</span> and is assigned a treatment <span class="math inline">\(z_n \in \{0, 1\}\)</span>. After the treatment, the unit produces an outcome</p>
 <p><span class="math display">\[
 \begin{aligned}
 y_n = \beta_0 + \beta_1 x_n + \beta_2 z_n + \epsilon_n \\
-\epsilon \sim N(0, 1).
+\epsilon_n \sim N(0, 1).
 \end{aligned}
 \]</span></p>
-<div id="data" class="cell" data-execution_count="2">
+<div id="data" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> <span class="dv">5000</span></span>
@@ -229,67 +229,89 @@ y_n = \beta_0 + \beta_1 x_n + \beta_2 z_n + \epsilon_n \\
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.random.normal(size<span class="op">=</span>size)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>z <span class="op">=</span> np.random.binomial(<span class="dv">1</span>, <span class="dv">1</span> <span class="op">/</span> <span class="dv">2</span>, size<span class="op">=</span>size)</span>
 <span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>epsilon <span class="op">=</span> np.random.normal(size<span class="op">=</span>size)</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> [<span class="fl">1.00</span>, <span class="fl">0.32</span>, <span class="fl">0.16</span>]</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>beta <span class="op">=</span> np.array([<span class="fl">1.00</span>, <span class="fl">0.32</span>, <span class="fl">0.16</span>])</span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> beta[<span class="dv">0</span>] <span class="op">+</span> beta[<span class="dv">1</span>] <span class="op">*</span> x <span class="op">+</span> beta[<span class="dv">2</span>] <span class="op">*</span> z <span class="op">+</span> epsilon</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>xs <span class="op">=</span> np.column_stack((np.ones(size), x, z))</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>xys <span class="op">=</span> <span class="bu">list</span>(<span class="bu">zip</span>(xs, y))</span>
-<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(xys[<span class="dv">0</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>yx <span class="op">=</span> np.column_stack((y, np.ones(size), x, z))</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(yx)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>(array([1.        , 1.62434536, 1.        ]), 1.206083277199519)</code></pre>
+<pre><code>[[ 1.20608328  1.          1.62434536  1.        ]
+ [ 0.61208307  1.         -0.61175641  0.        ]
+ [ 1.7668771   1.         -0.52817175  0.        ]
+ ...
+ [ 2.33983342  1.         -0.77598779  0.        ]
+ [-0.85242757  1.          1.08488869  0.        ]
+ [ 3.49552322  1.          2.24198946  1.        ]]</code></pre>
 </div>
 </div>
 <p>We can test the hypothesis</p>
 <p><span class="math display">\[
 \begin{align}
-H_0: \mathbf{\beta_2} = 0 \\
-H_1: \mathbf{\beta_2} \neq 0
+H_0: \beta_2 = 0 \\
+H_1: \beta_2 \neq 0
 \end{align}
 \]</span></p>
-<p>as well as estimate confidence sequences for <span class="math inline">\(\beta_2\)</span> at a significance level <span class="math inline">\(\alpha\)</span> using a <code>LinearRegression</code> model:</p>
-<div id="hypothesis" class="cell" data-execution_count="3">
+<p>and estimate <span class="math inline">\((1 - \alpha)\)</span> confidence sequences for <span class="math inline">\(\beta_2\)</span> using a <code>LinearRegression</code> model:</p>
+<div id="hypothesis" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> savvi.linear_regression <span class="im">import</span> LinearRegression</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>alpha <span class="op">=</span> <span class="fl">0.05</span></span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> xs.shape[<span class="dv">1</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> beta.size</span>
 <span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>lr <span class="op">=</span> LinearRegression(alpha, p)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>For each new unit sample <span class="math inline">\(n\)</span>, we run the test. If <span class="math inline">\(p_n &lt; \alpha\)</span>, we have the option to stop running:</p>
-<div id="cell-sequence" class="cell" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sequence <span class="op">=</span> lr.batch(xys)</span>
+<p>For each new unit sample <span class="math inline">\(n\)</span>, we run the test. If <span class="math inline">\(p_n(\beta_2) &lt; \alpha\)</span>, we have the option to stop running:</p>
+<div id="cell-sequence" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>sequence <span class="op">=</span> lr.batch(yx)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>optional_stop <span class="op">=</span> <span class="bu">next</span>(s <span class="cf">for</span> s <span class="kw">in</span> sequence <span class="cf">if</span> s.p_value[<span class="dv">2</span>] <span class="op">&lt;=</span> alpha)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">vars</span>(optional_stop)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>/Users/assuncaolfi/Projects/savvi/src/savvi/linear_regression.py:97: RuntimeWarning: divide by zero encountered in divide
-  (1 - (r * self.alpha**2) ** (1 / (self.nu() + 1)))</code></pre>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>optional_stop</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="sequence" class="cell-output cell-output-display cell-output-markdown" data-execution_count="8">
+<table class="table table-sm table-striped small">
+<thead>
+<tr class="header">
+<th>Parameter</th>
+<th>Estimate</th>
+<th>CI Lower</th>
+<th>CI Upper</th>
+<th>P-value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span class="math inline">\(\beta_0\)</span></td>
+<td>1.0056</td>
+<td>0.9187</td>
+<td>1.1539</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<td><span class="math inline">\(\beta_1\)</span></td>
+<td>0.3357</td>
+<td>0.2234</td>
+<td>0.3987</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<td><span class="math inline">\(\beta_2\)</span></td>
+<td>0.2128</td>
+<td>0.0027</td>
+<td>0.3701</td>
+<td>0.0432</td>
+</tr>
+</tbody>
+</table>
+<p>Sample size: 949</p>
 </div>
-<div id="sequence" class="cell-output cell-output-display" data-execution_count="3">
-<pre><code>{'lamb': 1,
- 'phi': 1,
- 'beta': array([1.0055657 , 0.33571434, 0.21281887]),
- 'covariance': array([[ 2.00002114e-03,  4.79141349e-06, -2.00052672e-03],
-        [ 4.79141349e-06,  1.08540923e-03, -1.19321030e-04],
-        [-2.00052672e-03, -1.19321030e-04,  4.24028865e-03]]),
- 'yty': 2165.7191404198866,
- 'Xty': array([1065.0017909 ,  366.4833688 ,  562.95992555]),
- 'n': 949,
- 'alpha': 0.05,
- 'conf_int': array([[0.91873431, 1.15391855],
-        [0.22339472, 0.39869202],
-        [0.00266113, 0.37009552]]),
- 'p_value': array([2.12264657e-95, 7.26608201e-23, 4.32465372e-02])}</code></pre>
 </div>
-</div>
-<div id="cell-viz" class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> savvi.utils <span class="im">import</span> plot</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>fig, ax1, ax2 <span class="op">=</span> plot(sequence, truth<span class="op">=</span>beta, index<span class="op">=</span>[<span class="dv">2</span>])</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(<span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="cell-viz" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>config InlineBackend.figure_formats <span class="op">=</span> [<span class="st">"svg"</span>]</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> savvi.utils <span class="im">import</span> plot</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>fig, ax1, ax2 <span class="op">=</span> plot(sequence, truth<span class="op">=</span>beta, index<span class="op">=</span>[<span class="dv">2</span>])</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>ax1.set_ylim(<span class="op">-</span><span class="fl">0.25</span>, <span class="fl">0.75</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="LinearRegression_files/figure-html/viz-output-1.svg" id="viz" class="img-fluid figure-img"></p>
+<p><img src="LinearRegression_files/figure-html/viz-output-1.png" id="viz" width="649" height="429" class="figure-img"></p>
 </figure>
 </div>
 </div>

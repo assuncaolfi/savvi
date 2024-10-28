@@ -121,6 +121,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -276,47 +305,79 @@ div.csl-indent {
 <section id="savvi.multinomial.Multinomial" class="level1">
 <h1>Multinomial</h1>
 <div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>multinomial.Multinomial(<span class="va">self</span>, alpha, theta_0, k<span class="op">=</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Sample ratio mismatch test from <span class="citation" data-cites="lindon2022anytimevalid">Lindon and Malek (<a href="#ref-lindon2022anytimevalid" role="doc-biblioref">2022</a>)</span>. See <a href="../examples/Multinomial.html">example</a>.</p>
-<section id="attributes" class="level2 doc-section doc-section-attributes">
-<h2 class="doc-section doc-section-attributes anchored" data-anchor-id="attributes">Attributes</h2>
+<p>Sample ratio mismatch test from <span class="citation" data-cites="lindon2022anytimevalid">Lindon and Malek (<a href="#ref-lindon2022anytimevalid" role="doc-biblioref">2022</a>)</span>.</p>
+<ul>
+<li>Parent class: <a href="../reference/Inference.html"><code>Inference</code></a></li>
+<li><a href="../examples/Multinomial.html">Example</a></li>
+</ul>
+<section id="parameters" class="level2 doc-section doc-section-parameters">
+<h2 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h2>
 <table class="table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 9%">
+<col style="width: 72%">
+<col style="width: 9%">
+</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
 <th>Type</th>
 <th>Description</th>
+<th>Default</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>theta</td>
-<td>cp.Variable</td>
-<td>Multinomial parameter.</td>
+<td>alpha</td>
+<td>float</td>
+<td>Probability of Type I error <span class="math inline">\(\alpha\)</span>.</td>
+<td><em>required</em></td>
 </tr>
 <tr class="even">
 <td>theta_0</td>
 <td>np.ndarray</td>
-<td>Null Multinomial parameter.</td>
+<td>Null Multinomial parameters <span class="math inline">\(\mathbf{\theta}_0\)</span>.</td>
+<td><em>required</em></td>
 </tr>
 <tr class="odd">
-<td>alpha_0</td>
-<td>np.ndarray</td>
-<td>Prior Dirichlet parameters.</td>
+<td>k</td>
+<td>float</td>
+<td>Concentration for Dirichlet prior parameters <span class="math inline">\(\mathbf{\alpha}_0 = k \mathbf{\theta}_0\)</span>.</td>
+<td><code>100</code></td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="attributes" class="level2">
+<h2 class="anchored" data-anchor-id="attributes">Attributes</h2>
+<table class="table">
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><a href="#savvi.multinomial.Multinomial.alpha_0">alpha_0</a></td>
+<td>Prior Dirichlet parameters <span class="math inline">\(\mathbf{\alpha}_0\)</span>.</td>
 </tr>
 <tr class="even">
-<td>alpha</td>
-<td>np.ndarray</td>
-<td>Posterior Dirichlet parameters.</td>
-</tr>
-<tr class="odd">
-<td>counts</td>
-<td>np.ndarray</td>
+<td><a href="#savvi.multinomial.Multinomial.counts">counts</a></td>
 <td>Success counts.</td>
 </tr>
+<tr class="odd">
+<td><a href="#savvi.multinomial.Multinomial.odds">odds</a></td>
+<td>Posterior odds.</td>
+</tr>
 <tr class="even">
-<td>d</td>
-<td>float</td>
-<td>Size of theta.</td>
+<td><a href="#savvi.multinomial.Multinomial.theta">theta</a></td>
+<td>Estimate of theta <span class="math inline">\(\mathbf{\hat{\theta}}\)</span>.</td>
+</tr>
+<tr class="odd">
+<td><a href="#savvi.multinomial.Multinomial.theta_0">theta_0</a></td>
+<td>Null Multinomial parameters <span class="math inline">\(\mathbf{\theta}_0\)</span>.</td>
 </tr>
 </tbody>
 </table>
@@ -332,110 +393,18 @@ div.csl-indent {
 </thead>
 <tbody>
 <tr class="odd">
-<td><a href="#savvi.multinomial.Multinomial.calculate_conf_int">calculate_conf_int</a></td>
-<td>Calculate confidence intervals for the parameters.</td>
-</tr>
-<tr class="even">
-<td><a href="#savvi.multinomial.Multinomial.calculate_p_value">calculate_p_value</a></td>
-<td>Calculate the p-value.</td>
-</tr>
-<tr class="odd">
 <td><a href="#savvi.multinomial.Multinomial.update">update</a></td>
-<td>Update the model with new data.</td>
-</tr>
-<tr class="even">
-<td><a href="#savvi.multinomial.Multinomial.update_odds">update_odds</a></td>
-<td>Update the odds ratio.</td>
+<td>Update the model with success counts.</td>
 </tr>
 </tbody>
 </table>
-<section id="savvi.multinomial.Multinomial.calculate_conf_int" class="level3">
-<h3 class="anchored" data-anchor-id="savvi.multinomial.Multinomial.calculate_conf_int">calculate_conf_int</h3>
-<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>multinomial.Multinomial.calculate_conf_int(<span class="op">**</span>kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Calculate confidence intervals for the parameters.</p>
-<section id="returns" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns">Returns</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>np.ndarray</td>
-<td>The calculated confidence intervals.</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="savvi.multinomial.Multinomial.calculate_p_value" class="level3">
-<h3 class="anchored" data-anchor-id="savvi.multinomial.Multinomial.calculate_p_value">calculate_p_value</h3>
-<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>multinomial.Multinomial.calculate_p_value(<span class="op">**</span>kwargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Calculate the p-value.</p>
-<section id="returns-1" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-1">Returns</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>float</td>
-<td>The calculated p-value.</td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
 <section id="savvi.multinomial.Multinomial.update" class="level3">
 <h3 class="anchored" data-anchor-id="savvi.multinomial.Multinomial.update">update</h3>
-<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>multinomial.Multinomial.update(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Update the model with new data.</p>
-<section id="parameters" class="level4 doc-section doc-section-parameters">
-<h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters">Parameters</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-<th>Default</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>x</td>
-<td>np.ndarray</td>
-<td>New data to update the model.</td>
-<td><em>required</em></td>
-</tr>
-</tbody>
-</table>
-</section>
-</section>
-<section id="savvi.multinomial.Multinomial.update_odds" class="level3">
-<h3 class="anchored" data-anchor-id="savvi.multinomial.Multinomial.update_odds">update_odds</h3>
-<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>multinomial.Multinomial.update_odds(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<p>Update the odds ratio.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>multinomial.Multinomial.update(x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Update the model with success counts.</p>
 <section id="parameters-1" class="level4 doc-section doc-section-parameters">
 <h4 class="doc-section doc-section-parameters anchored" data-anchor-id="parameters-1">Parameters</h4>
 <table class="table">
-<colgroup>
-<col style="width: 11%">
-<col style="width: 17%">
-<col style="width: 52%">
-<col style="width: 17%">
-</colgroup>
 <thead>
 <tr class="header">
 <th>Name</th>
@@ -448,27 +417,8 @@ div.csl-indent {
 <tr class="odd">
 <td>x</td>
 <td>np.ndarray</td>
-<td>New data to update the odds ratio.</td>
+<td>Success counts.</td>
 <td><em>required</em></td>
-</tr>
-</tbody>
-</table>
-</section>
-<section id="returns-2" class="level4 doc-section doc-section-returns">
-<h4 class="doc-section doc-section-returns anchored" data-anchor-id="returns-2">Returns</h4>
-<table class="table">
-<thead>
-<tr class="header">
-<th>Name</th>
-<th>Type</th>
-<th>Description</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td></td>
-<td>float</td>
-<td>The updated odds ratio.</td>
 </tr>
 </tbody>
 </table>

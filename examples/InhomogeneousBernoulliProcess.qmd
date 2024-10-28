@@ -1,5 +1,6 @@
 ---
 title: Inhomogeneous Bernoulli Process
+subtitle: '[Reference](../reference/InhomogeneousBernoulliProcess.qmd)'
 jupyter:
   jupytext:
     text_representation:
@@ -15,8 +16,6 @@ jupyter:
 
 _Application: conversion rate optimization when all groups share a common multiplicative time-varying effect._
 
-Based on @lindon2022anytimevalid.
-
 Suppose a new experimental unit $n$ is randomly assigned to one of $i \in \{1, 2, 3\}$ experiment treatment groups at time $t$, with assignment probabilities $\mathbf{\rho} = [0.1, 0.3, 0.6]$, and a Bernoulli outcome is observed with probability $p_i(t) = \exp(\mu(t) + \delta_{i})$, $\mathbf{\delta} = [\log 0.2, \log 0.3, \log 0.4]$. The conditional probability that the next Bernoulli success comes from group $i$ is
 
 $$
@@ -27,13 +26,12 @@ Therefore, the next Bernoulli success comes from a random group, $\mathrm{Multin
 
 ```{python}
 #| label: data
-#| warning: false
 import numpy as np
 
 rho = np.array([0.1, 0.3, 0.6])
 delta = np.log([0.2, 0.3, 0.4])
 theta = rho * np.exp(delta) / np.sum(rho * np.exp(delta))
-size = 5250
+size = 4000
 np.random.seed(1)
 xs = np.random.multinomial(1, theta, size=size)
 print(xs)
@@ -48,10 +46,12 @@ H_1: \delta_0 \lt \delta_1, \delta_0 \lt \delta_2
 \end{align}
 $$
 
-using a Multinomial test with $\mathbf{\theta}_0 = \mathbf{\rho}$ and a list of inequalities for $\mathbf{\delta}$. To estimate confidence intervals for the contrasts, we may set a matrix of weights, with rows $[-1, 0, 1]$ for $\delta_2 - \delta_0$ and $[0, -1, 1]$ for $\delta_2 - \delta_1$:
+using a Multinomial test with $\mathbf{\theta}_0 = \mathbf{\rho}$ and a list of inequalities for $\mathbf{\delta}$. To estimate $(1 - \alpha)$ confidence intervals for the contrasts, we may set a matrix of weights, with rows $[-1, 0, 1]$ for $\delta_2 - \delta_0$ and $[0, -1, 1]$ for $\delta_2 - \delta_1$:
 
 ```{python}
 #| label: hypothesis
+#| message: false
+#| warning: false
 from savvi.multinomial import InhomogeneousBernoulliProcess
 
 alpha = 0.05
@@ -60,23 +60,19 @@ weights = np.array([[-1, 0, 1], [0, -1, 1]])
 ibp = InhomogeneousBernoulliProcess(alpha, rho, hypothesis, weights)
 ```
 
-For each new unit sample $n$, we run the test. If $p_n < u$, we have the option to stop running:
+For each new unit sample $n$, we run the test. If $p_n < \alpha$, we have the option to stop running:
 
 ```{python}
 #| label: sequence
 #| warning: false
-import cvxpy as cp
-
-solver = cp.CLARABEL
-sequence = ibp.batch(xs, solver=solver)
+sequence = ibp.batch(xs)
 optional_stop = next(s for s in sequence if s.p_value <= alpha)
-vars(optional_stop)
+optional_stop
 ```
 
 ```{python}
-#| label: fig
+#| label: viz
 %config InlineBackend.figure_formats = ["svg"]
-
 import matplotlib.pyplot as plt
 from savvi.utils import plot
 

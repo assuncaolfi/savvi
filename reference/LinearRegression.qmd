@@ -4,27 +4,36 @@
 linear_regression.LinearRegression(self, alpha, p, phi=1)
 ```
 
-Treatment effect tests from @lindon2024anytimevalidlinearmodelsregression.
+Coefficient t-test for treatment effects from @lindon2024anytimevalidlinearmodelsregression.
 
-Coefficients are calculated using the Recursive Least Squares algorithm.
+Coefficients and covariance matrix are calculated using the Recursive Least
+Squares algorithm.
 
-See [example](../examples/linear_regression.qmd).
+* Parent class: [`Inference`](/reference/Inference.qmd)
+* [Example](../examples/LinearRegression.qmd)
 
-## Attributes {.doc-section .doc-section-attributes}
+## Parameters {.doc-section .doc-section-parameters}
 
-| Name       | Type       | Description                                 |
-|------------|------------|---------------------------------------------|
-| beta       | np.ndarray | Estimate of regression coefficients.        |
-| covariance | np.ndarray | Estimate of covariance matrix.              |
-| yty        | float      | Sum of squared response values.             |
-| Xty        | np.ndarray | Sum of products of covariates and response. |
+| Name   | Type   | Description                           | Default    |
+|--------|--------|---------------------------------------|------------|
+| alpha  | float  | Probability of Type I error $\alpha$. | _required_ |
+| p      | int    | Number of covariates $p$.             | _required_ |
+| phi    | float  | Prior scale $\phi$.                   | `1`        |
+
+## Attributes
+
+| Name | Description |
+| --- | --- |
+| [Xty](#savvi.linear_regression.LinearRegression.Xty) | Sum of products of covariates and response $X^T y$. |
+| [beta](#savvi.linear_regression.LinearRegression.beta) | Estimate of regression coefficients $\hat{\beta}$. |
+| [covariance](#savvi.linear_regression.LinearRegression.covariance) | Estimate of covariance matrix $\hat{\Sigma}$. |
+| [phi](#savvi.linear_regression.LinearRegression.phi) | Prior scale $\phi$. |
+| [yty](#savvi.linear_regression.LinearRegression.yty) | Sum of squared response values $y^T y$. |
 
 ## Methods
 
 | Name | Description |
 | --- | --- |
-| [calculate_conf_int](#savvi.linear_regression.LinearRegression.calculate_conf_int) | Calculate confidence intervals for the coefficients. |
-| [calculate_p_value](#savvi.linear_regression.LinearRegression.calculate_p_value) | Calculate p-values for the coefficients. |
 | [nu](#savvi.linear_regression.LinearRegression.nu) | Degrees of freedom. |
 | [predict](#savvi.linear_regression.LinearRegression.predict) | Predict values for given covariates. |
 | [sigma](#savvi.linear_regression.LinearRegression.sigma) | Estimate the standard deviation of the error term. |
@@ -33,34 +42,6 @@ See [example](../examples/linear_regression.qmd).
 | [t_stats](#savvi.linear_regression.LinearRegression.t_stats) | Calculate the t statistics of the coefficients. |
 | [update](#savvi.linear_regression.LinearRegression.update) | Update the model with new data. |
 | [z2](#savvi.linear_regression.LinearRegression.z2) | Calculate the squared z-scores. |
-
-### calculate_conf_int { #savvi.linear_regression.LinearRegression.calculate_conf_int }
-
-```python
-linear_regression.LinearRegression.calculate_conf_int()
-```
-
-Calculate confidence intervals for the coefficients.
-
-#### Returns {.doc-section .doc-section-returns}
-
-| Name   | Type       | Description                                |
-|--------|------------|--------------------------------------------|
-|        | np.ndarray | Confidence intervals for the coefficients. |
-
-### calculate_p_value { #savvi.linear_regression.LinearRegression.calculate_p_value }
-
-```python
-linear_regression.LinearRegression.calculate_p_value()
-```
-
-Calculate p-values for the coefficients.
-
-#### Returns {.doc-section .doc-section-returns}
-
-| Name   | Type       | Description                    |
-|--------|------------|--------------------------------|
-|        | np.ndarray | P-values for the coefficients. |
 
 ### nu { #savvi.linear_regression.LinearRegression.nu }
 
@@ -72,9 +53,9 @@ Degrees of freedom.
 
 #### Returns {.doc-section .doc-section-returns}
 
-| Name   | Type   | Description         |
-|--------|--------|---------------------|
-|        | int    | Degrees of freedom. |
+| Name   | Type   | Description   |
+|--------|--------|---------------|
+|        | int    |               |
 
 ### predict { #savvi.linear_regression.LinearRegression.predict }
 
@@ -92,9 +73,9 @@ Predict values for given covariates.
 
 #### Returns {.doc-section .doc-section-returns}
 
-| Name   | Type       | Description       |
-|--------|------------|-------------------|
-|        | np.ndarray | Predicted values. |
+| Name   | Type       | Description   |
+|--------|------------|---------------|
+|        | np.ndarray |               |
 
 ### sigma { #savvi.linear_regression.LinearRegression.sigma }
 
@@ -106,9 +87,9 @@ Estimate the standard deviation of the error term.
 
 #### Returns {.doc-section .doc-section-returns}
 
-| Name   | Type   | Description                                           |
-|--------|--------|-------------------------------------------------------|
-|        | float  | Estimate of the standard deviation of the error term. |
+| Name   | Type   | Description   |
+|--------|--------|---------------|
+|        | float  |               |
 
 ### sse { #savvi.linear_regression.LinearRegression.sse }
 
@@ -122,7 +103,7 @@ Compute the Sum of Squared Errors (SSE).
 
 | Name   | Type   | Description   |
 |--------|--------|---------------|
-|        | float  | SSE value.    |
+|        | float  |               |
 
 ### standard_errors { #savvi.linear_regression.LinearRegression.standard_errors }
 
@@ -134,9 +115,9 @@ Estimate the standard errors of the coefficients.
 
 #### Returns {.doc-section .doc-section-returns}
 
-| Name   | Type       | Description                                          |
-|--------|------------|------------------------------------------------------|
-|        | np.ndarray | Estimate of the standard errors of the coefficients. |
+| Name   | Type       | Description   |
+|--------|------------|---------------|
+|        | np.ndarray |               |
 
 ### t_stats { #savvi.linear_regression.LinearRegression.t_stats }
 
@@ -148,23 +129,23 @@ Calculate the t statistics of the coefficients.
 
 #### Returns {.doc-section .doc-section-returns}
 
-| Name   | Type       | Description                       |
-|--------|------------|-----------------------------------|
-|        | np.ndarray | T statistics of the coefficients. |
+| Name   | Type       | Description   |
+|--------|------------|---------------|
+|        | np.ndarray |               |
 
 ### update { #savvi.linear_regression.LinearRegression.update }
 
 ```python
-linear_regression.LinearRegression.update(xy)
+linear_regression.LinearRegression.update(yx)
 ```
 
 Update the model with new data.
 
 #### Parameters {.doc-section .doc-section-parameters}
 
-| Name   | Type                       | Description                             | Default    |
-|--------|----------------------------|-----------------------------------------|------------|
-| xy     | Tuple\[np.ndarray, float\] | Tuple of response and covariate values. | _required_ |
+| Name   | Type       | Description                                                    | Default    |
+|--------|------------|----------------------------------------------------------------|------------|
+| yx     | np.ndarray | Array of response and covariate values $[y, x_1, \dots, x_p]$. | _required_ |
 
 ### z2 { #savvi.linear_regression.LinearRegression.z2 }
 
@@ -176,6 +157,6 @@ Calculate the squared z-scores.
 
 #### Returns {.doc-section .doc-section-returns}
 
-| Name   | Type       | Description       |
-|--------|------------|-------------------|
-|        | np.ndarray | Squared z-scores. |
+| Name   | Type       | Description   |
+|--------|------------|---------------|
+|        | np.ndarray |               |
