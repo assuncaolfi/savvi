@@ -1,6 +1,6 @@
 [project]
 name = "savvi"
-version = "0.3.0"
+version = "0.3.1"
 description = "savvi is a package for Safe Anytime Valid Inference"
 authors = [
     {name = "Luís Assunção", email = "assuncaolfi@gmail.com"},
