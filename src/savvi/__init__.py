@@ -98,7 +98,7 @@ class Inference:
         p_value = self.calculate_p_value(**kwargs)
         self.conf_int[:, 0] = np.fmax(self.conf_int[:, 0], conf_int[:, 0])
         self.conf_int[:, 1] = np.fmin(self.conf_int[:, 1], conf_int[:, 1])
-        self.p_value = np.minimum(self.p_value, p_value)
+        self.p_value = np.fmin(self.p_value, p_value)
 
     @abstractmethod
     def calculate_conf_int(self, **kwargs) -> np.ndarray:
