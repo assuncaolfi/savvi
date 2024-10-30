@@ -178,18 +178,25 @@
     "href": "CHANGELOG.html",
     "title": "Changelog",
     "section": "",
-    "text": "All notable changes to this project will be documented in this file.\nThe format is based on Keep a Changelog, and this project adheres to Semantic Versioning.\n\n\n\n\n\nInference.__str__ and Inference._repr_markdown_ methods\n\n\n\n\n\nBumped numpy to 2.1.2, as well as other dependencies\nImproved documentation\n\n\n\n\n\n\n\n\nInference for linear regression coefficients\nExample notebook for LinearRegression model\nWebsite documentation using quartodoc\nInference.batch update method\nUtilities for plotting\nPublished to pypi\n\n\n\n\n\nSome refactoring in the base Inference object"
+    "text": "All notable changes to this project will be documented in this file.\nThe format is based on Keep a Changelog, and this project adheres to Semantic Versioning.\n\n\n\n\n\nP-values are compared using np.fmin instead of np.minimum, so NaNs are not propagated\n\n\n\n\n\n\n\n\nInference.__str__ and Inference._repr_markdown_ methods\n\n\n\n\n\nBumped numpy to 2.1.2, as well as other dependencies\nImproved documentation\n\n\n\n\n\n\n\n\nInference for linear regression coefficients\nExample notebook for LinearRegression model\nWebsite documentation using quartodoc\nInference.batch update method\nUtilities for plotting\nPublished to pypi\n\n\n\n\n\nSome refactoring in the base Inference object"
   },
   {
     "objectID": "CHANGELOG.html#section",
     "href": "CHANGELOG.html#section",
     "title": "Changelog",
     "section": "",
-    "text": "Inference.__str__ and Inference._repr_markdown_ methods\n\n\n\n\n\nBumped numpy to 2.1.2, as well as other dependencies\nImproved documentation"
+    "text": "P-values are compared using np.fmin instead of np.minimum, so NaNs are not propagated"
   },
   {
     "objectID": "CHANGELOG.html#section-1",
     "href": "CHANGELOG.html#section-1",
+    "title": "Changelog",
+    "section": "",
+    "text": "Inference.__str__ and Inference._repr_markdown_ methods\n\n\n\n\n\nBumped numpy to 2.1.2, as well as other dependencies\nImproved documentation"
+  },
+  {
+    "objectID": "CHANGELOG.html#section-2",
+    "href": "CHANGELOG.html#section-2",
     "title": "Changelog",
     "section": "",
     "text": "Inference for linear regression coefficients\nExample notebook for LinearRegression model\nWebsite documentation using quartodoc\nInference.batch update method\nUtilities for plotting\nPublished to pypi\n\n\n\n\n\nSome refactoring in the base Inference object"
