@@ -1,3 +1,2 @@
-/_freeze/* linguist-generated=true
-/_site/* linguist-generated=true
-/reference/* linguist-generated=true
+*.html linguist-generated=true
+*.js linguist-generated=true
