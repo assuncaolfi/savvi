@@ -87,6 +87,35 @@ div.csl-indent {
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -169,11 +198,13 @@ div.csl-indent {
 </header>
 
 
-<p>savvi is a package for Safe Anytime Valid Inference. Also, it’s a savvy pun.</p>
-<p>From <span class="citation" data-cites="ramdas2023gametheoretic">Ramdas et al. (<a href="#ref-ramdas2023gametheoretic" role="doc-biblioref">2023</a>)</span>:</p>
-<blockquote class="blockquote">
-<p>Safe anytime-valid inference (SAVI) provides measures of statistical evidence and certainty – e-processes for testing and confidence sequences for estimation – that remain valid at all stopping times, accommodating continuous monitoring and analysis of accumulating data and optional stopping or continuation for any reason.</p>
-</blockquote>
+<p>savvi is a package for Safe Anytime Valid Inference (SAVI). Also, it’s a savvy pun.</p>
+<p>The goal of this package is to provide methods to calculate confidence intervals and p-values that are valid at all sample sizes.</p>
+<p>More formally, given a significance level <span class="math inline">\(\alpha \in [0, 1]\)</span>, a <span class="math inline">\((1 - \alpha)\)</span> confidence sequence for parameters <span class="math inline">\(\theta \in \mathbb{R}^p\)</span> is a sequence of intervals <span class="math inline">\(C_n\)</span> such that</p>
+<p><span class="math display">\[P(\forall n \geq 1 : \theta \notin C_n) \leq \alpha.\]</span></p>
+<p><span class="math inline">\(p_n\)</span> is an anytime-valid p-value for that process if</p>
+<p><span class="math display">\[P(\forall n \geq 1 : p_n \leq \alpha) \leq \alpha.\]</span></p>
+<p>See <span class="citation" data-cites="ramdas2023gametheoretic">Ramdas et al. (<a href="#ref-ramdas2023gametheoretic" role="doc-biblioref">2023</a>)</span>.</p>
 <section id="install" class="level2">
 <h2 class="anchored" data-anchor-id="install">Install</h2>
 <p>Stable version:</p>
