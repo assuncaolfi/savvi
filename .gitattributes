@@ -1,2 +1,3 @@
 *.html linguist-generated=true
 *.js linguist-generated=true
+_site/styles.css linguist=generated=true
