@@ -172,7 +172,7 @@
     "href": "index.html",
     "title": "savvi",
     "section": "",
-    "text": "savvi is a package for Safe Anytime Valid Inference. Also, it’s a savvy pun.\nFrom Ramdas et al. (2023):"
+    "text": "savvi is a package for Safe Anytime Valid Inference (SAVI). Also, it’s a savvy pun.\nThe goal of this package is to provide methods to calculate confidence intervals and p-values that are valid at all sample sizes.\nMore formally, given a significance level \\(\\alpha \\in [0, 1]\\), a \\((1 - \\alpha)\\) confidence sequence for parameters \\(\\theta \\in \\mathbb{R}^p\\) is a sequence of intervals \\(C_n\\) such that\n\\[P(\\forall n \\geq 1 : \\theta \\notin C_n) \\leq \\alpha.\\]\n\\(p_n\\) is an anytime-valid p-value for that process if\n\\[P(\\forall n \\geq 1 : p_n \\leq \\alpha) \\leq \\alpha.\\]\nSee Ramdas et al. (2023)."
   },
   {
     "objectID": "index.html#install",

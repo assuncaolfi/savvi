@@ -2,15 +2,23 @@
 title: savvi
 ---
 
-savvi is a package for Safe Anytime Valid Inference. Also, it's a savvy pun.
+savvi is a package for Safe Anytime Valid Inference (SAVI). Also, it's a savvy
+pun.
 
-From @ramdas2023gametheoretic:
+The goal of this package is to provide methods to calculate confidence intervals
+and p-values that are valid at all sample sizes. 
 
-> Safe anytime-valid inference (SAVI) provides measures of statistical evidence
-> and certainty -- e-processes for testing and confidence sequences for estimation
-> -- that remain valid at all stopping times, accommodating continuous monitoring
-> and analysis of accumulating data and optional stopping or continuation for
-> any reason.
+More formally, given a significance level $\alpha \in [0, 1]$, a $(1 - \alpha)$
+confidence sequence for parameters $\theta \in \mathbb{R}^p$ is a sequence of
+intervals $C_n$ such that
+
+$$P(\forall n \geq 1 : \theta \notin C_n) \leq \alpha.$$
+
+$p_n$ is an anytime-valid p-value for that process if
+
+$$P(\forall n \geq 1 : p_n \leq \alpha) \leq \alpha.$$
+
+See @ramdas2023gametheoretic.
 
 ## Install
 
