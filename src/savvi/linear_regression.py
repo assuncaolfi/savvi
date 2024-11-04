@@ -6,7 +6,7 @@ import numpy as np
 # NOTE f-test can't be implemented online
 class LinearRegression(Inference):
     """
-    Coefficient t-test for treatment effects from @lindon2024anytimevalidlinearmodelsregression.
+    Covariate adjusted t-tests from @lindon2024anytimevalidlinearmodelsregression.
 
     Coefficients and covariance matrix are calculated using the Recursive Least
     Squares algorithm.

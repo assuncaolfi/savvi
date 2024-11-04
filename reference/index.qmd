@@ -10,7 +10,7 @@
 
 | | |
 | --- | --- |
-| [LinearRegression](LinearRegression.qmd#savvi.linear_regression.LinearRegression) | Coefficient t-test for treatment effects from @lindon2024anytimevalidlinearmodelsregression. |
+| [LinearRegression](LinearRegression.qmd#savvi.linear_regression.LinearRegression) | Covariate adjusted t-tests from @lindon2024anytimevalidlinearmodelsregression. |
 
 ### multinomial
 

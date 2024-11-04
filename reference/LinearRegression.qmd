@@ -4,7 +4,7 @@
 linear_regression.LinearRegression(self, alpha, p, phi=1)
 ```
 
-Coefficient t-test for treatment effects from @lindon2024anytimevalidlinearmodelsregression.
+Covariate adjusted t-tests from @lindon2024anytimevalidlinearmodelsregression.
 
 Coefficients and covariance matrix are calculated using the Recursive Least
 Squares algorithm.

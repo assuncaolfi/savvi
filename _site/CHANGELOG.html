@@ -138,23 +138,32 @@ ul.task-list li input[type="checkbox"] {
 <p>All notable changes to this project will be documented in this file.</p>
 <p>The format is based on <a href="https://keepachangelog.com/en/1.1.0/">Keep a Changelog</a>, and this project adheres to <a href="https://semver.org/spec/v2.0.0.html">Semantic Versioning</a>.</p>
 <section id="section" class="level2">
-<h2 class="anchored" data-anchor-id="section">[0.3.0] - 2024-10-28</h2>
+<h2 class="anchored" data-anchor-id="section">[0.3.1] - 2024-10-30</h2>
+<section id="changed" class="level3">
+<h3 class="anchored" data-anchor-id="changed">Changed</h3>
+<ul>
+<li>P-values are compared using <code>np.fmin</code> instead of <code>np.minimum</code>, so NaNs are not propagated</li>
+</ul>
+</section>
+</section>
+<section id="section-1" class="level2">
+<h2 class="anchored" data-anchor-id="section-1">[0.3.0] - 2024-10-28</h2>
 <section id="added" class="level3">
 <h3 class="anchored" data-anchor-id="added">Added</h3>
 <ul>
 <li><code>Inference.__str__</code> and <code>Inference._repr_markdown_</code> methods</li>
 </ul>
 </section>
-<section id="changed" class="level3">
-<h3 class="anchored" data-anchor-id="changed">Changed</h3>
+<section id="changed-1" class="level3">
+<h3 class="anchored" data-anchor-id="changed-1">Changed</h3>
 <ul>
 <li>Bumped numpy to 2.1.2, as well as other dependencies</li>
 <li>Improved documentation</li>
 </ul>
 </section>
 </section>
-<section id="section-1" class="level2">
-<h2 class="anchored" data-anchor-id="section-1">[0.2.0] - 2024-10-18</h2>
+<section id="section-2" class="level2">
+<h2 class="anchored" data-anchor-id="section-2">[0.2.0] - 2024-10-18</h2>
 <section id="added-1" class="level3">
 <h3 class="anchored" data-anchor-id="added-1">Added</h3>
 <ul>
@@ -166,8 +175,8 @@ ul.task-list li input[type="checkbox"] {
 <li>Published to pypi</li>
 </ul>
 </section>
-<section id="changed-1" class="level3">
-<h3 class="anchored" data-anchor-id="changed-1">Changed</h3>
+<section id="changed-2" class="level3">
+<h3 class="anchored" data-anchor-id="changed-2">Changed</h3>
 <ul>
 <li>Some refactoring in the base <code>Inference</code> object</li>
 </ul>
